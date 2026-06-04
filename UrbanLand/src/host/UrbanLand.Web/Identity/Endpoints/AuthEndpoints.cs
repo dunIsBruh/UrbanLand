@@ -19,53 +19,63 @@ public static class AuthEndpoints
         
         group.MapPost("/register", RegisterAsync)
             .WithName("Register")
+            .WithSummary("Register")
             .WithDescription("Register a new user")
             .AllowAnonymous();
 
         group.MapPost("/login", LoginAsync)
             .WithName("Login")
+            .WithSummary("Login")
             .WithDescription("Authenticate user and get tokens")
             .AllowAnonymous();
 
         group.MapPost("/refresh", RefreshTokenAsync)
             .WithName("Refresh")
+            .WithSummary("Refresh Token")
             .WithDescription("Refresh access token using refresh token")
             .AllowAnonymous();
         
 
         group.MapGet("/me", GetCurrentUserAsync)
             .WithName("GetCurrentUser")
+            .WithSummary("Get Current User")
             .WithDescription("Get current user information")
             .RequireAuthorization();
 
         group.MapPut("/profile", UpdateProfileAsync)
             .WithName("UpdateProfile")
+            .WithSummary("Update Profile")
             .WithDescription("Update user profile")
             .RequireAuthorization();
 
         group.MapPost("/change-password", ChangePasswordAsync)
             .WithName("ChangePassword")
+            .WithSummary("Change Password")
             .WithDescription("Change user password")
             .RequireAuthorization();
 
         group.MapPost("/logout", LogoutAsync)
             .WithName("Logout")
+            .WithSummary("Logout")
             .WithDescription("Revoke refresh token")
             .RequireAuthorization();
 
         group.MapPost("/logout-all", LogoutAllAsync)
             .WithName("LogoutAll")
+            .WithSummary("Logout All")
             .WithDescription("Revoke all refresh tokens")
             .RequireAuthorization();
         
 
         group.MapGet("/users", GetAllUsersAsync)
             .WithName("GetAllUsers")
+            .WithSummary("Get All Users")
             .WithDescription("Get all users (Admin only)")
             .RequireAuthorization("AdminPolicy");
 
-        group.MapPost("/users/{userId}/role", SetUserRoleAsync)
+        group.MapPost("/users/{userId:guid}/role", SetUserRoleAsync)
             .WithName("SetUserRole")
+            .WithSummary("Set User Role")
             .WithDescription("Set user role (Admin only)")
             .RequireAuthorization("AdminPolicy");
 
@@ -363,6 +373,8 @@ public static class AuthEndpoints
 
 public sealed record SetRoleRequest
 {
+    [Required]
+    [RegularExpression("^(User|Admin)$")]
     public string Role { get; init; } = string.Empty;
 }
 

@@ -24,6 +24,7 @@ public static class InvitationEndpoints
 
         group.MapPost("/", CreateInvitationAsync)
             .WithName("CreateInvitation")
+            .WithSummary("Create Invitation")
             .WithDescription("Create an invitation link")
             .Produces<InvitationResponse>(StatusCodes.Status201Created)
             .Produces<Error>(StatusCodes.Status400BadRequest)
@@ -32,6 +33,7 @@ public static class InvitationEndpoints
 
         group.MapPost("/accept", AcceptInvitationAsync)
             .WithName("AcceptInvitation")
+            .WithSummary("Accept Invitation")
             .WithDescription("Accept an invitation to join the project via invite code")
             .Produces<MemberResponse>()
             .Produces<Error>(StatusCodes.Status400BadRequest)

@@ -25,6 +25,7 @@ public static class SceneEndpoints
 
         group.MapPost("/projects/{projectId:guid}/scene", CreateSceneAsync)
             .WithName("CreateScene")
+            .WithSummary("Create Scene")
             .WithDescription("Create a scene for a project")
             .Produces<CreateSceneResponse>(StatusCodes.Status201Created)
             .Produces<Error>(StatusCodes.Status400BadRequest)
@@ -33,12 +34,14 @@ public static class SceneEndpoints
 
         group.MapGet("/projects/{projectId:guid}/scene", GetSceneAsync)
             .WithName("GetScene")
+            .WithSummary("Get Scene")
             .WithDescription("Get scene by project ID")
             .Produces<SceneResponse>()
             .Produces<Error>(StatusCodes.Status404NotFound);
 
         group.MapPost("/scenes/{sceneId:guid}/objects", PlaceObjectAsync)
             .WithName("PlaceObject")
+            .WithSummary("Place Object")
             .WithDescription("Place an object in the scene")
             .Produces<PlaceObjectResponse>(StatusCodes.Status201Created)
             .Produces<Error>(StatusCodes.Status400BadRequest)
@@ -47,6 +50,7 @@ public static class SceneEndpoints
 
         group.MapPut("/scenes/{sceneId:guid}/objects/{objectId:guid}/position", MoveObjectAsync)
             .WithName("MoveObject")
+            .WithSummary("Move Object")
             .WithDescription("Move an object in the scene")
             .Produces(StatusCodes.Status204NoContent)
             .Produces<Error>(StatusCodes.Status400BadRequest)
@@ -54,12 +58,14 @@ public static class SceneEndpoints
 
         group.MapDelete("/scenes/{sceneId:guid}/objects/{objectId:guid}", RemoveObjectAsync)
             .WithName("RemoveObject")
+            .WithSummary("Remove Object")
             .WithDescription("Remove an object from the scene")
             .Produces(StatusCodes.Status204NoContent)
             .Produces<Error>(StatusCodes.Status404NotFound);
 
         group.MapPut("/scenes/{sceneId:guid}/viewmode", SwitchViewModeAsync)
             .WithName("SwitchViewMode")
+            .WithSummary("Switch View Mode")
             .WithDescription("Switch scene view mode between 2D and 3D")
             .Produces(StatusCodes.Status204NoContent)
             .Produces<Error>(StatusCodes.Status400BadRequest)
