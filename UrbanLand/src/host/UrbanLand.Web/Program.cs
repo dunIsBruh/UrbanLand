@@ -26,18 +26,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, config) =>
     config.ReadFrom.Configuration(context.Configuration));
 
-// shared infrastructure
-// builder.Services.AddSharedInfrastructure(builder.Configuration);
-
-// builder.Services.AddMediatR(cfg => {
-//     cfg.RegisterServicesFromAssembly(
-//         typeof(ProjectManagement.Application.Commands.CreateProject.CreateProjectCommandHandler)
-//             .Assembly
-//         );
-//     // cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-// });
-
-// swagger
 builder.Services.AddCustomSwagger();
 
 builder.Services.AddRedisCaching(builder.Configuration);
