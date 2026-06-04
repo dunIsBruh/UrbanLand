@@ -1,0 +1,100 @@
+2026-05-30 08:21:46.551 +03:00 [INF] Configured endpoint SceneStatistics, Consumer: ProjectManagement.Infrastructure.Integration.Consumers.SceneStatisticsConsumer
+2026-05-30 08:21:46.621 +03:00 [INF] Configured endpoint ObjectMovedDomainEvent, Consumer: SceneDesign.Infrastructure.Integration.Consumers.DomainEvents.ObjectMovedDomainEventConsumer
+2026-05-30 08:21:46.629 +03:00 [INF] Configured endpoint ObjectPlacedDomainEvent, Consumer: SceneDesign.Infrastructure.Integration.Consumers.DomainEvents.ObjectPlacedDomainEventConsumer
+2026-05-30 08:21:46.640 +03:00 [INF] Configured endpoint ObjectRemovedDomainEvent, Consumer: SceneDesign.Infrastructure.Integration.Consumers.DomainEvents.ObjectRemovedDomainEventConsumer
+2026-05-30 08:21:46.647 +03:00 [INF] Configured endpoint SceneCreatedDomainEvent, Consumer: SceneDesign.Infrastructure.Integration.Consumers.DomainEvents.SceneCreatedDomainEventConsumer
+2026-05-30 08:21:46.660 +03:00 [INF] Configured endpoint ViewModeChangedDomainEvent, Consumer: SceneDesign.Infrastructure.Integration.Consumers.DomainEvents.ViewModeChangedDomainEventConsumer
+2026-05-30 08:21:46.665 +03:00 [INF] Configured endpoint GetAssetInfo, Consumer: AssetCatalog.Infrastructure.Integration.Consumers.GetAssetInfoConsumer
+2026-05-30 08:21:48.368 +03:00 [INF] Application starting up
+2026-05-30 08:21:48.476 +03:00 [INF] Bus started: "loopback://localhost/"
+2026-05-30 08:21:48.882 +03:00 [INF] Now listening on: https://localhost:7273
+2026-05-30 08:21:48.884 +03:00 [INF] Now listening on: http://localhost:5271
+2026-05-30 08:21:48.885 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-30 08:21:48.886 +03:00 [INF] Hosting environment: Development
+2026-05-30 08:21:48.888 +03:00 [INF] Content root path: C:\Users\dania\MyInfo\LearningProjects\2sem\semester-work\UrbanLand\src\host\UrbanLand.Web
+2026-05-30 08:26:48.519 +03:00 [INF] Usage Telemetry: {"id":"0c720000-6796-b1e9-1f59-08debe0b5809","created":"2026-05-30T08:21:46.4101613\u002B03:00","host":{"framework_version":"10.0.2","mass_transit_version":"8.5.9.0","operating_system_version":"Microsoft Windows NT 10.0.22631.0","time_zone_info":"(UTC\u002B03:00) \u041C\u043E\u0441\u043A\u0432\u0430, \u0421\u0430\u043D\u043A\u0442-\u041F\u0435\u0442\u0435\u0440\u0431\u0443\u0440\u0433","commit_hash":"7d3353695e26f07234f6becaa6ce3a32ed8766fc"},"bus":[{"created":"2026-05-30T08:21:46.4171196\u002B03:00","configured":"2026-05-30T08:21:46.9119258\u002B03:00","started":"2026-05-30T08:21:48.4733509\u002B03:00","name":"IBus","endpoints":[{"name":"SceneStatistics","type":"InMemory","prefetch_count":16,"consumer_count":1,"message_count":1},{"name":"ObjectMovedDomainEvent","type":"InMemory","prefetch_count":16,"consumer_count":1,"message_count":1},{"name":"ObjectPlacedDomainEvent","type":"InMemory","prefetch_count":16,"consumer_count":1,"message_count":1},{"name":"ObjectRemovedDomainEvent","type":"InMemory","prefetch_count":16,"consumer_count":1,"message_count":1},{"name":"SceneCreatedDomainEvent","type":"InMemory","prefetch_count":16,"consumer_count":1,"message_count":1},{"name":"ViewModeChangedDomainEvent","type":"InMemory","prefetch_count":16,"consumer_count":1,"message_count":1},{"name":"GetAssetInfo","type":"InMemory","prefetch_count":16,"consumer_count":1,"message_count":1},{"name":"_bus_","type":"InMemory","prefetch_count":16}]}]}
+2026-05-30 08:33:10.592 +03:00 [INF] New user registered: urbantest.1780119189951@example.com
+2026-05-30 08:33:11.757 +03:00 [INF] User logged in: urbantest.1780119189951@example.com
+2026-05-30 08:33:12.138 +03:00 [WRN] Failed login attempt for user: urbantest.1780119189951@example.com
+2026-05-30 08:33:13.994 +03:00 [INF] User logged in: urbantest.1780119189951@example.com
+2026-05-30 08:33:15.155 +03:00 [INF] User logged in: urbantest.1780119189951@example.com
+2026-05-30 08:33:15.656 +03:00 [INF] User logged in: admin@urbanland.com
+2026-05-30 08:33:16.293 +03:00 [INF] New user registered: urbantest.1780119189951.promote@example.com
+2026-05-30 08:33:18.121 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-30 08:33:20.063 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-30 08:33:20.936 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-05-30 08:33:23.054 +03:00 [INF] Start processing HTTP request GET https://api.sketchfab.com/v3/models/abc123def
+2026-05-30 08:33:23.057 +03:00 [INF] Sending HTTP request GET https://api.sketchfab.com/v3/models/abc123def
+2026-05-30 08:33:23.702 +03:00 [INF] Received HTTP response headers after 641.4898ms - 404
+2026-05-30 08:33:23.833 +03:00 [INF] End processing HTTP request after 782.576ms - 404
+2026-05-30 08:33:23.836 +03:00 [WRN] Sketchfab API returned "NotFound" for model abc123def
+2026-05-30 08:33:24.876 +03:00 [INF] New user registered: urbantest.1780119189951.second@example.com
+2026-05-30 08:33:25.264 +03:00 [INF] User logged in: urbantest.1780119189951.second@example.com
+2026-05-30 08:37:12.825 +03:00 [INF] New user registered: urbantest.1780119432620@example.com
+2026-05-30 08:37:13.519 +03:00 [INF] User logged in: urbantest.1780119432620@example.com
+2026-05-30 08:37:13.963 +03:00 [WRN] Failed login attempt for user: urbantest.1780119432620@example.com
+2026-05-30 08:37:16.033 +03:00 [INF] User logged in: urbantest.1780119432620@example.com
+2026-05-30 08:37:17.038 +03:00 [INF] User logged in: urbantest.1780119432620@example.com
+2026-05-30 08:37:17.565 +03:00 [INF] User logged in: admin@urbanland.com
+2026-05-30 08:37:18.329 +03:00 [INF] New user registered: urbantest.1780119432620.promote@example.com
+2026-05-30 08:37:23.846 +03:00 [INF] Start processing HTTP request GET https://api.sketchfab.com/v3/models/abc123def
+2026-05-30 08:37:23.854 +03:00 [INF] Sending HTTP request GET https://api.sketchfab.com/v3/models/abc123def
+2026-05-30 08:37:34.713 +03:00 [INF] New user registered: urbantest.1780119432620.second@example.com
+2026-05-30 08:37:35.251 +03:00 [INF] User logged in: urbantest.1780119432620.second@example.com
+2026-05-30 08:38:48.340 +03:00 [INF] HTTP request failed after 84479.1308ms
+System.Net.Http.HttpRequestException: Попытка установить соединение была безуспешной, т.к. от другого компьютера за требуемое время не получен нужный отклик, или было разорвано уже установленное соединение из-за неверного отклика уже подключенного компьютера. (api.sketchfab.com:443)
+ ---> System.Net.Sockets.SocketException (10060): Попытка установить соединение была безуспешной, т.к. от другого компьютера за требуемое время не получен нужный отклик, или было разорвано уже установленное соединение из-за неверного отклика уже подключенного компьютера.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.SocketsHttpHandler.<SendAsync>g__CreateHandlerAndSendAsync|115_0(HttpRequestMessage request, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+2026-05-30 08:38:48.349 +03:00 [INF] HTTP request failed after 84502.9284ms
+System.Net.Http.HttpRequestException: Попытка установить соединение была безуспешной, т.к. от другого компьютера за требуемое время не получен нужный отклик, или было разорвано уже установленное соединение из-за неверного отклика уже подключенного компьютера. (api.sketchfab.com:443)
+ ---> System.Net.Sockets.SocketException (10060): Попытка установить соединение была безуспешной, т.к. от другого компьютера за требуемое время не получен нужный отклик, или было разорвано уже установленное соединение из-за неверного отклика уже подключенного компьютера.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.SocketsHttpHandler.<SendAsync>g__CreateHandlerAndSendAsync|115_0(HttpRequestMessage request, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+2026-05-30 08:38:48.356 +03:00 [ERR] Failed to download model abc123def from Sketchfab
+System.Net.Http.HttpRequestException: Попытка установить соединение была безуспешной, т.к. от другого компьютера за требуемое время не получен нужный отклик, или было разорвано уже установленное соединение из-за неверного отклика уже подключенного компьютера. (api.sketchfab.com:443)
+ ---> System.Net.Sockets.SocketException (10060): Попытка установить соединение была безуспешной, т.к. от другого компьютера за требуемое время не получен нужный отклик, или было разорвано уже установленное соединение из-за неверного отклика уже подключенного компьютера.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.SocketsHttpHandler.<SendAsync>g__CreateHandlerAndSendAsync|115_0(HttpRequestMessage request, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at AssetCatalog.Infrastructure.Services.SketchfabService.DownloadModelAsync(String sketchfabModelId) in C:\Users\dania\MyInfo\LearningProjects\2sem\semester-work\UrbanLand\src\contexts\AssetCatalog\AssetCatalog.Infrastructure\Services\SketchfabService.cs:line 18
+2026-05-30 09:04:28.455 +03:00 [INF] Application is shutting down...
+2026-05-30 09:04:28.545 +03:00 [INF] Bus stopped: "loopback://localhost/"

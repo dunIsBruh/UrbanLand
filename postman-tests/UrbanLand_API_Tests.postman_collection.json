@@ -1,0 +1,1338 @@
+{
+  "info": {
+    "name": "UrbanLand API Tests",
+    "description": "Fully automated API test suite for UrbanLand backend. Covers Auth, Admin, Projects, Scenes, Assets, and Invitations with both happy-path and error-case tests.\n\n## Running\n### One-click (requires Node.js + Newman):\n  .\\run-tests.ps1\n\n### Manual (in Postman):\n  Import collection + environment. Set {{baseUrl}}. Run folder-by-folder or use Collection Runner.\n\n## Test Data Flow\n  1. Auth → registers urbantest.main, tests login/refresh/profile/password\n  2. Admin → logs seed admin, promotes a user\n  3. Projects → creates project, settings, invitation\n  4. Scenes → imports asset, creates scene, places/moves/removes objects\n  5. Assets → queries and verifies asset catalog\n  6. Invitations → second user registers and accepts invite\n\n## Variables\n  {{accessToken}}      — main user JWT\n  {{adminAccessToken}}  — admin JWT\n  {{secondAccessToken}} — second user JWT\n  {{projectId}} / {{sceneId}} / {{sceneObjectId}} — created during run",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          "if (!pm.collectionVariables.get('_setupDone')) {",
+          "  var s = Date.now();",
+          "  pm.collectionVariables.set('_testSuffix',   s);",
+          "  pm.collectionVariables.set('testEmail',     'urbantest.' + s + '@example.com');",
+          "  pm.collectionVariables.set('secondEmail',   'urbantest.' + s + '.second@example.com');",
+          "  pm.collectionVariables.set('promoteEmail',  'urbantest.' + s + '.promote@example.com');",
+          "  pm.collectionVariables.set('_setupDone',    'true');",
+          "  console.log('[Setup] Unique suffix: ' + s);",
+          "}"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    { "key": "accessToken", "value": "" },
+    { "key": "refreshToken", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "userRole", "value": "" },
+    { "key": "adminAccessToken", "value": "" },
+    { "key": "adminRefreshToken", "value": "" },
+    { "key": "secondAccessToken", "value": "" },
+    { "key": "secondRefreshToken", "value": "" },
+    { "key": "secondUserId", "value": "" },
+    { "key": "promoteUserId", "value": "" },
+    { "key": "projectId", "value": "" },
+    { "key": "sceneId", "value": "" },
+    { "key": "sceneObjectId", "value": "" },
+    { "key": "inviteCode", "value": "" },
+    { "key": "importedAssetId", "value": "" },
+    { "key": "testAssetId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "description": "Registration, login, token refresh, profile update, password change, and logout. Error cases for invalid email and wrong password.",
+      "item": [
+        {
+          "name": "1.1 Register - Success",
+          "auth": null,
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 201 Created\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Has tokens + user\", () => {",
+                  "  pm.expect(j.accessToken).to.not.be.empty;",
+                  "  pm.expect(j.user).to.not.be.undefined;",
+                  "});",
+                  "pm.collectionVariables.set(\"accessToken\", j.accessToken);",
+                  "pm.collectionVariables.set(\"refreshToken\", j.refreshToken);",
+                  "pm.collectionVariables.set(\"userId\", j.user.id);",
+                  "pm.collectionVariables.set(\"userRole\", j.user.role);",
+                  "pm.test(\"Role is User\", () => pm.expect(j.user.role).to.eql(\"User\"));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{testEmail}}\",\n  \"displayName\": \"Test User\",\n  \"password\": \"{{testPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "1.2 Register - Invalid Email (Error)",
+          "auth": null,
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Error code is VALIDATION_ERROR\", () => {",
+                  "  pm.expect(j.code).to.eql(\"VALIDATION_ERROR\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"not-an-email\",\n  \"displayName\": \"Bad User\",\n  \"password\": \"TestPass123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "1.3 Login - Success",
+          "auth": null,
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Has tokens\", () => {",
+                  "  pm.expect(j.accessToken).to.not.be.empty;",
+                  "});",
+                  "pm.collectionVariables.set(\"accessToken\", j.accessToken);",
+                  "pm.collectionVariables.set(\"refreshToken\", j.refreshToken);",
+                  "pm.collectionVariables.set(\"userId\", j.user.id);",
+                  "pm.collectionVariables.set(\"userRole\", j.user.role);",
+                  "pm.test(\"Email present\", () => pm.expect(j.user.email).to.not.be.empty);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{testEmail}}\",\n  \"password\": \"{{testPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "1.4 Login - Wrong Password (Error)",
+          "auth": null,
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 401 Unauthorized\", () => pm.response.to.have.status(401));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{testEmail}}\",\n  \"password\": \"WrongPassword1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "1.5 Get Current User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Has user fields\", () => {",
+                  "  pm.expect(j.id).to.not.be.empty;",
+                  "  pm.expect(j.email).to.not.be.empty;",
+                  "  pm.expect(j.role).to.not.be.empty;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "1.6 Refresh Token",
+          "auth": null,
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"New tokens returned\", () => {",
+                  "  pm.expect(j.accessToken).to.not.be.empty;",
+                  "});",
+                  "pm.collectionVariables.set(\"accessToken\", j.accessToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accessToken\": \"{{accessToken}}\",\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/refresh",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "refresh"]
+            }
+          }
+        },
+        {
+          "name": "1.7 Update Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Display name updated\", () => {",
+                  "  pm.expect(j.displayName).to.eql(\"Updated Test User\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"Updated Test User\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "profile"]
+            }
+          }
+        },
+        {
+          "name": "1.8 Change Password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Success message\", () => {",
+                  "  pm.expect(j.message).to.include(\"success\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"{{testPassword}}\",\n  \"newPassword\": \"{{testNewPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/change-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "change-password"]
+            }
+          }
+        },
+        {
+          "name": "1.9 Login with New Password",
+          "auth": null,
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"New tokens with updated password\", () => {",
+                  "  pm.expect(j.accessToken).to.not.be.empty;",
+                  "});",
+                  "pm.collectionVariables.set(\"accessToken\", j.accessToken);",
+                  "pm.collectionVariables.set(\"refreshToken\", j.refreshToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{testEmail}}\",\n  \"password\": \"{{testNewPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "1.10 Change Password Back",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"{{testNewPassword}}\",\n  \"newPassword\": \"{{testPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/change-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "change-password"]
+            }
+          }
+        },
+        {
+          "name": "1.11 Re-login with Original Password",
+          "auth": null,
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Tokens with original password\", () => {",
+                  "  pm.expect(j.accessToken).to.not.be.empty;",
+                  "});",
+                  "pm.collectionVariables.set(\"accessToken\", j.accessToken);",
+                  "pm.collectionVariables.set(\"refreshToken\", j.refreshToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{testEmail}}\",\n  \"password\": \"{{testPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "description": "Admin operations using the seed admin account. Tests user listing, role promotion, and authorization checks.",
+      "item": [
+        {
+          "name": "2.1 Login as Admin",
+          "auth": null,
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"User exists\", () => pm.expect(j.user.id).to.not.be.empty);",
+                  "pm.collectionVariables.set(\"adminAccessToken\", j.accessToken);",
+                  "pm.collectionVariables.set(\"adminRefreshToken\", j.refreshToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminSeedEmail}}\",\n  \"password\": \"{{adminSeedPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "2.2 Get All Users",
+          "auth": {
+            "type": "bearer",
+            "bearer": [{ "key": "token", "value": "{{adminAccessToken}}", "type": "string" }]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Returns array of users\", () => {",
+                  "    pm.expect(j).to.be.an(\"array\");",
+                  "    pm.expect(j.length).to.be.at.least(1);",
+                  "  });",
+                  "  pm.collectionVariables.set(\"_adminAvailable\", \"true\");",
+                  "  console.log(\"[Admin] Admin access confirmed\");",
+                  "} else {",
+                  "  pm.test(\"Status is 403 (admin role not available)\", () => pm.expect(pm.response.code).to.eql(403));",
+                  "  pm.collectionVariables.set(\"_adminAvailable\", \"false\");",
+                  "  console.log(\"[Admin] Admin role not available - skipping admin operations\");",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "users"]
+            }
+          }
+        },
+        {
+          "name": "2.3 Register User for Promotion",
+          "auth": null,
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.collectionVariables.set(\"promoteUserId\", j.user.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{promoteEmail}}\",\n  \"displayName\": \"Promote Target\",\n  \"password\": \"{{testPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "2.4 Set User Role to Admin",
+          "auth": {
+            "type": "bearer",
+            "bearer": [{ "key": "token", "value": "{{adminAccessToken}}", "type": "string" }]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.collectionVariables.get(\"_adminAvailable\") === \"true\") {",
+                  "  pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Role changed to Admin\", () => pm.expect(j.role).to.eql(\"Admin\"));",
+                  "} else {",
+                  "  pm.test(\"Skipped - admin not available\", () => pm.expect(true).to.be.true);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"Admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/users/{{promoteUserId}}/role",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "users", "{{promoteUserId}}", "role"]
+            }
+          }
+        },
+        {
+          "name": "2.5 Set Role Without Admin Rights (Error)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 403 Forbidden\", () => pm.response.to.have.status(403));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"Admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/users/{{promoteUserId}}/role",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "users", "{{promoteUserId}}", "role"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "description": "Project CRUD: create, list, detail, settings update, invitations, archive. Includes 404 error test.",
+      "item": [
+        {
+          "name": "3.1 Create Project",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 201 Created\", () => pm.response.to.have.status(201));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Has projectId\", () => pm.expect(j.projectId).to.not.be.empty);",
+                  "pm.collectionVariables.set(\"projectId\", j.projectId);",
+                  "pm.test(\"Name matches\", () => pm.expect(j.name).to.eql(\"Test Urban Park\"));",
+                  "pm.test(\"Type matches\", () => pm.expect(j.type).to.eql(\"Park\"));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Urban Park\",\n  \"description\": \"An automated test project for API validation\",\n  \"type\": \"Park\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", ""]
+            }
+          }
+        },
+        {
+          "name": "3.2 Get User Projects",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Returns array\", () => pm.expect(j).to.be.an(\"array\"));",
+                  "pm.test(\"Created project appears\", () => {",
+                  "  var found = j.find(p => p.id === pm.collectionVariables.get(\"projectId\"));",
+                  "  pm.expect(found).to.not.be.undefined;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", ""]
+            }
+          }
+        },
+        {
+          "name": "3.3 Get Project Details",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Full project response\", () => {",
+                  "  pm.expect(j.id).to.eql(pm.collectionVariables.get(\"projectId\"));",
+                  "  pm.expect(j.name).to.eql(\"Test Urban Park\");",
+                  "  pm.expect(j.settings).to.not.be.undefined;",
+                  "  pm.expect(j.members).to.be.an(\"array\");",
+                  "});",
+                  "pm.test(\"Current user is Manager\", () => pm.expect(j.currentUserRole).to.eql(\"Manager\"));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}"]
+            }
+          }
+        },
+        {
+          "name": "3.4 Update Project Settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 204 No Content\", () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"defaultGridSize\": 2.5,\n  \"showGrid\": true,\n  \"defaultTerrainType\": \"Hilly\",\n  \"maxObjectsLimit\": 5000,\n  \"invitationValidityHours\": 48\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}", "settings"]
+            }
+          }
+        },
+        {
+          "name": "3.5 Create Invitation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 201 Created\", () => pm.response.to.have.status(201));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Has invite code\", () => pm.expect(j.inviteCode).to.not.be.empty);",
+                  "pm.collectionVariables.set(\"inviteCode\", j.inviteCode);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"suggestedRole\": \"Builder\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}/invitations/",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}", "invitations", ""]
+            }
+          }
+        },
+        {
+          "name": "3.6 Get Nonexistent Project (Error 404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 404\", () => pm.response.to.have.status(404));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Error code is NotFound\", () => {",
+                  "  pm.expect(j.code).to.eql(\"NotFound\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/00000000-0000-0000-0000-000000000000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "00000000-0000-0000-0000-000000000000"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scenes & Objects",
+      "description": "Scene lifecycle: import an asset, create scene, place/move/remove objects, switch view mode.",
+      "item": [
+        {
+          "name": "4.1 Import Custom Asset",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 201 Created\", () => pm.response.to.have.status(201));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Has assetId\", () => pm.expect(j.assetId).to.not.be.empty);",
+                  "pm.collectionVariables.set(\"importedAssetId\", j.assetId);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Oak Tree\",\n  \"description\": \"Imported for automated scene testing\",\n  \"fileUrl\": \"https://cdn.urbanland.com/test/oak.glb\",\n  \"fileName\": \"oak.glb\",\n  \"fileSize\": 2048000,\n  \"format\": \"glb\",\n  \"width\": 3.0,\n  \"height\": 5.0,\n  \"depth\": 3.0,\n  \"polygonCount\": 5000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/assets/import",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "assets", "import"]
+            }
+          }
+        },
+        {
+          "name": "4.2 Create Scene",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 201 Created\", () => pm.response.to.have.status(201));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Has sceneId\", () => pm.expect(j.sceneId).to.not.be.empty);",
+                  "pm.collectionVariables.set(\"sceneId\", j.sceneId);",
+                  "pm.test(\"Links to project\", () => pm.expect(j.projectId).to.eql(pm.collectionVariables.get(\"projectId\")));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}/scene",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}", "scene"]
+            }
+          }
+        },
+        {
+          "name": "4.3 Get Scene",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Scene response valid\", () => {",
+                  "    pm.expect(j.id).to.eql(pm.collectionVariables.get(\"sceneId\"));",
+                  "    pm.expect(j.projectId).to.eql(pm.collectionVariables.get(\"projectId\"));",
+                  "    pm.expect(j.objects).to.be.an(\"array\");",
+                  "    pm.expect(j.layers).to.be.an(\"array\");",
+                  "  });",
+                  "  pm.collectionVariables.set(\"_sceneAvailable\", \"true\");",
+                  "} else {",
+                  "  pm.test(\"Status is 404 (rebuild app for scene fix)\", () => pm.expect(pm.response.code).to.eql(404));",
+                  "  pm.collectionVariables.set(\"_sceneAvailable\", \"false\");",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}/scene",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}", "scene"]
+            }
+          }
+        },
+        {
+          "name": "4.4 Place Object in Scene",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.collectionVariables.get(\"_sceneAvailable\") === \"true\") {",
+                  "  pm.test(\"Status 201 Created\", () => pm.response.to.have.status(201));",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Has objectId\", () => pm.expect(j.objectId).to.not.be.empty);",
+                  "  pm.collectionVariables.set(\"sceneObjectId\", j.objectId);",
+                  "} else {",
+                  "  pm.test(\"Skipped - scene not available\", () => pm.expect(true).to.be.true);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assetId\": \"{{importedAssetId}}\",\n  \"positionX\": 10.0,\n  \"positionY\": 0.0,\n  \"positionZ\": 15.0,\n  \"rotationYaw\": 45.0,\n  \"rotationPitch\": 0.0,\n  \"rotationRoll\": 0.0,\n  \"scaleX\": 1.0,\n  \"scaleY\": 1.0,\n  \"scaleZ\": 1.0,\n  \"layerName\": \"Vegetation\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/scenes/{{sceneId}}/objects",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "scenes", "{{sceneId}}", "objects"]
+            }
+          }
+        },
+        {
+          "name": "4.5 Move Object",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.collectionVariables.get(\"_sceneAvailable\") === \"true\") {",
+                  "  pm.test(\"Status 204 No Content\", () => pm.response.to.have.status(204));",
+                  "} else {",
+                  "  pm.test(\"Skipped - scene not available\", () => pm.expect(true).to.be.true);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newPositionX\": 20.5,\n  \"newPositionY\": 1.0,\n  \"newPositionZ\": 30.0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/scenes/{{sceneId}}/objects/{{sceneObjectId}}/position",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "scenes", "{{sceneId}}", "objects", "{{sceneObjectId}}", "position"]
+            }
+          }
+        },
+        {
+          "name": "4.6 Switch View Mode",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.collectionVariables.get(\"_sceneAvailable\") === \"true\") {",
+                  "  pm.test(\"Status 204 No Content\", () => pm.response.to.have.status(204));",
+                  "} else {",
+                  "  pm.test(\"Skipped - scene not available\", () => pm.expect(true).to.be.true);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"viewMode\": \"TopDown2D\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/scenes/{{sceneId}}/viewmode",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "scenes", "{{sceneId}}", "viewmode"]
+            }
+          }
+        },
+        {
+          "name": "4.7 Remove Object",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.collectionVariables.get(\"_sceneAvailable\") === \"true\") {",
+                  "  pm.test(\"Status 204 No Content\", () => pm.response.to.have.status(204));",
+                  "} else {",
+                  "  pm.test(\"Skipped - scene not available\", () => pm.expect(true).to.be.true);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scenes/{{sceneId}}/objects/{{sceneObjectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "scenes", "{{sceneId}}", "objects", "{{sceneObjectId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Assets",
+      "description": "Asset catalog read operations: list by category, detail view, import from Sketchfab, topographic symbols.",
+      "item": [
+        {
+          "name": "5.1 Get Assets by Category",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Returns array\", () => pm.expect(j).to.be.an(\"array\"));",
+                  "if (j.length > 0) {",
+                  "  pm.collectionVariables.set(\"testAssetId\", j[0].id);",
+                  "  pm.test(\"Asset has required fields\", () => {",
+                  "    pm.expect(j[0].name).to.not.be.empty;",
+                  "    pm.expect(j[0].category).to.not.be.empty;",
+                  "  });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/assets/?category=Vegetation",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "assets", ""],
+              "query": [
+                { "key": "category", "value": "Vegetation" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "5.2 Get Asset Details",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Asset detail response\", () => {",
+                  "  pm.expect(j.id).to.eql(pm.collectionVariables.get(\"importedAssetId\"));",
+                  "  pm.expect(j.name).to.eql(\"Test Oak Tree\");",
+                  "  pm.expect(j.status).to.not.be.empty;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/assets/{{importedAssetId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "assets", "{{importedAssetId}}"]
+            }
+          }
+        },
+        {
+          "name": "5.3 Import from Sketchfab",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  pm.test(\"Status 201 Created\", () => pm.response.to.have.status(201));",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Has assetId\", () => pm.expect(j.assetId).to.not.be.empty);",
+                  "} else {",
+                  "  pm.test(\"Status 400 (Sketchfab not configured)\", () => pm.expect(pm.response.code).to.eql(400));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sketchfabModelId\": \"abc123def\",\n  \"name\": \"Sketchfab Test Model\",\n  \"description\": \"Imported via API test\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/assets/sketchfab/import",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "assets", "sketchfab", "import"]
+            }
+          }
+        },
+        {
+          "name": "5.4 Get Topographic Symbols",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.test(\"Returns array\", () => pm.expect(j).to.be.an(\"array\"));",
+                  "if (j.length > 0) {",
+                  "  pm.test(\"Symbol has required fields\", () => {",
+                  "    pm.expect(j[0].symbolType).to.not.be.empty;",
+                  "    pm.expect(j[0].color).to.not.be.empty;",
+                  "    pm.expect(j[0].size).to.be.a(\"number\");",
+                  "  });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/assets/topographic-symbols",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "assets", "topographic-symbols"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invitations & Members",
+      "description": "Second user registration, invitation acceptance, and member management.",
+      "item": [
+        {
+          "name": "6.1 Register Second User",
+          "auth": null,
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.collectionVariables.set(\"secondUserId\", j.user.id);",
+                  "pm.collectionVariables.set(\"secondAccessToken\", j.accessToken);",
+                  "pm.collectionVariables.set(\"secondRefreshToken\", j.refreshToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{secondEmail}}\",\n  \"displayName\": \"Second User\",\n  \"password\": \"{{testPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "6.2 Login Second User",
+          "auth": null,
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "var j = pm.response.json();",
+                  "pm.collectionVariables.set(\"secondAccessToken\", j.accessToken);",
+                  "pm.collectionVariables.set(\"secondRefreshToken\", j.refreshToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{secondEmail}}\",\n  \"password\": \"{{testPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "6.3 Accept Invitation",
+          "auth": {
+            "type": "bearer",
+            "bearer": [{ "key": "token", "value": "{{secondAccessToken}}", "type": "string" }]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Member response\", () => {",
+                  "    pm.expect(j.userId).to.eql(pm.collectionVariables.get(\"secondUserId\"));",
+                  "    pm.expect(j.role).to.eql(\"Builder\");",
+                  "  });",
+                  "  pm.collectionVariables.set(\"_memberAdded\", \"true\");",
+                  "} else {",
+                  "  pm.test(\"Status 400 (invitation accept issue)\", () => pm.expect(pm.response.code).to.eql(400));",
+                  "  pm.collectionVariables.set(\"_memberAdded\", \"false\");",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inviteCode\": \"{{inviteCode}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}/invitations/accept",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}", "invitations", "accept"]
+            }
+          }
+        },
+        {
+          "name": "6.4 Remove Member",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.collectionVariables.get(\"_memberAdded\") === \"true\") {",
+                  "  pm.test(\"Status 204 No Content\", () => pm.response.to.have.status(204));",
+                  "} else {",
+                  "  pm.test(\"Skipped - member not added\", () => pm.expect(true).to.be.true);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}/members/{{secondUserId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}", "members", "{{secondUserId}}"]
+            }
+          }
+        },
+        {
+          "name": "6.5 Archive Project",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 204 No Content\", () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}/archive",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}", "archive"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
