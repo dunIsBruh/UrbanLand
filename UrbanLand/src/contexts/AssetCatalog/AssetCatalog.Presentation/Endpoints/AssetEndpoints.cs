@@ -28,35 +28,41 @@ public static class AssetEndpoints
 
         group.MapGet("/", GetAssetsAsync)
             .WithName("GetAssets")
+            .WithSummary("Get Assets")
             .WithDescription("Get assets by category")
             .Produces<List<AssetSummaryResponse>>();
 
         group.MapGet("/{assetId:guid}", GetAssetAsync)
             .WithName("GetAsset")
+            .WithSummary("Get Asset")
             .WithDescription("Get asset details")
             .Produces<AssetDetailResponse>()
             .Produces<Error>(StatusCodes.Status404NotFound);
 
         group.MapPost("/import", ImportCustomAssetAsync)
             .WithName("ImportCustomAsset")
+            .WithSummary("Import Custom Asset")
             .WithDescription("Import a custom 3D model")
             .Produces<ImportAssetResponse>(StatusCodes.Status201Created)
             .Produces<Error>(StatusCodes.Status400BadRequest);
 
         group.MapPost("/sketchfab/import", ImportFromSketchfabAsync)
             .WithName("ImportFromSketchfab")
+            .WithSummary("Import From Sketchfab")
             .WithDescription("Import a model from Sketchfab")
             .Produces<ImportAssetResponse>(StatusCodes.Status201Created)
             .Produces<Error>(StatusCodes.Status400BadRequest);
 
         group.MapPut("/{assetId:guid}/approve", ApproveAssetAsync)
             .WithName("ApproveAsset")
+            .WithSummary("Approve Asset")
             .WithDescription("Approve a pending asset")
             .Produces(StatusCodes.Status204NoContent)
             .Produces<Error>(StatusCodes.Status404NotFound);
 
         group.MapGet("/topographic-symbols", GetTopographicSymbolsAsync)
             .WithName("GetTopographicSymbols")
+            .WithSummary("Get Topographic Symbols")
             .WithDescription("Get all topographic symbols for 2D mode")
             .Produces<List<TopographicSymbolResponse>>();
 

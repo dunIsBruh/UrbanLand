@@ -24,6 +24,7 @@ public static class ProjectMemberEndpoints
 
         group.MapPost("/", AddMemberAsync)
             .WithName("AddMember")
+            .WithSummary("Add Member")
             .WithDescription("Add a member to the project")
             .Produces(StatusCodes.Status204NoContent)
             .Produces<Error>(StatusCodes.Status400BadRequest)
@@ -32,6 +33,7 @@ public static class ProjectMemberEndpoints
 
         group.MapPut("/{userId:guid}/role", ChangeMemberRoleAsync)
             .WithName("ChangeMemberRole")
+            .WithSummary("Change Member Role")
             .WithDescription("Change a member's role")
             .Produces(StatusCodes.Status204NoContent)
             .Produces<Error>(StatusCodes.Status400BadRequest)
@@ -40,6 +42,7 @@ public static class ProjectMemberEndpoints
 
         group.MapDelete("/{userId:guid}", RemoveMemberAsync)
             .WithName("RemoveMember")
+            .WithSummary("Remove Member")
             .WithDescription("Remove a member from the project")
             .Produces(StatusCodes.Status204NoContent)
             .Produces<Error>(StatusCodes.Status400BadRequest)

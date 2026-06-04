@@ -27,6 +27,7 @@ public static class ProjectEndpoints
 
         group.MapPost("/", CreateProjectAsync)
             .WithName("CreateProject")
+            .WithSummary("Create Project")
             .WithDescription("Create a new project")
             .Produces<CreateProjectResponse>(StatusCodes.Status201Created)
             .Produces<Error>(StatusCodes.Status400BadRequest)
@@ -34,6 +35,7 @@ public static class ProjectEndpoints
 
         group.MapPost("/{projectId:guid}/archive", ArchiveProjectAsync)
             .WithName("ArchiveProject")
+            .WithSummary("Archive Project")
             .WithDescription("Archive the project")
             .Produces(StatusCodes.Status204NoContent)
             .Produces<Error>(StatusCodes.Status400BadRequest)
@@ -42,6 +44,7 @@ public static class ProjectEndpoints
 
         group.MapPut("/{projectId:guid}/settings", UpdateSettingsAsync)
             .WithName("UpdateSettings")
+            .WithSummary("Update Settings")
             .WithDescription("Update project settings")
             .Produces(StatusCodes.Status204NoContent)
             .Produces<Error>(StatusCodes.Status400BadRequest)
@@ -50,11 +53,13 @@ public static class ProjectEndpoints
 
         group.MapGet("/", GetUserProjectsAsync)
             .WithName("GetUserProjects")
+            .WithSummary("Get User Projects")
             .WithDescription("Get all projects for the current user")
             .Produces<List<UserProjectResponse>>();
 
         group.MapGet("/{projectId:guid}", GetProjectDetailsAsync)
             .WithName("GetProjectDetails")
+            .WithSummary("Get Project Details")
             .WithDescription("Get detailed project information")
             .Produces<ProjectResponse>()
             .Produces<Error>(StatusCodes.Status403Forbidden)
