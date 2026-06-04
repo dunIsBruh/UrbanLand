@@ -21,18 +21,24 @@ public static class AuthEndpoints
             .WithName("Register")
             .WithSummary("Register")
             .WithDescription("Register a new user")
+            .Produces<AuthResponse>(StatusCodes.Status200OK)
+            .Produces<Error>(StatusCodes.Status400BadRequest)
             .AllowAnonymous();
 
         group.MapPost("/login", LoginAsync)
             .WithName("Login")
             .WithSummary("Login")
             .WithDescription("Authenticate user and get tokens")
+            .Produces<AuthResponse>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
             .AllowAnonymous();
 
         group.MapPost("/refresh", RefreshTokenAsync)
             .WithName("Refresh")
             .WithSummary("Refresh Token")
             .WithDescription("Refresh access token using refresh token")
+            .Produces<AuthResponse>(StatusCodes.Status200OK)
+            .Produces<Error>(StatusCodes.Status400BadRequest)
             .AllowAnonymous();
         
 
@@ -40,30 +46,42 @@ public static class AuthEndpoints
             .WithName("GetCurrentUser")
             .WithSummary("Get Current User")
             .WithDescription("Get current user information")
+            .Produces<UserResponse>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization();
 
         group.MapPut("/profile", UpdateProfileAsync)
             .WithName("UpdateProfile")
             .WithSummary("Update Profile")
             .WithDescription("Update user profile")
+            .Produces<UserResponse>(StatusCodes.Status200OK)
+            .Produces<Error>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization();
 
         group.MapPost("/change-password", ChangePasswordAsync)
             .WithName("ChangePassword")
             .WithSummary("Change Password")
             .WithDescription("Change user password")
+            .Produces(StatusCodes.Status200OK)
+            .Produces<Error>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization();
 
         group.MapPost("/logout", LogoutAsync)
             .WithName("Logout")
             .WithSummary("Logout")
             .WithDescription("Revoke refresh token")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization();
 
         group.MapPost("/logout-all", LogoutAllAsync)
             .WithName("LogoutAll")
             .WithSummary("Logout All")
             .WithDescription("Revoke all refresh tokens")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization();
         
 
@@ -71,12 +89,19 @@ public static class AuthEndpoints
             .WithName("GetAllUsers")
             .WithSummary("Get All Users")
             .WithDescription("Get all users (Admin only)")
+            .Produces<List<UserResponse>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
             .RequireAuthorization("AdminPolicy");
 
         group.MapPost("/users/{userId:guid}/role", SetUserRoleAsync)
             .WithName("SetUserRole")
             .WithSummary("Set User Role")
             .WithDescription("Set user role (Admin only)")
+            .Produces<UserResponse>(StatusCodes.Status200OK)
+            .Produces<Error>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
             .RequireAuthorization("AdminPolicy");
 
         return app;
