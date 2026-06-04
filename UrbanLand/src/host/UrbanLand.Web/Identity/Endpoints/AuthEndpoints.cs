@@ -21,7 +21,7 @@ public static class AuthEndpoints
             .WithName("Register")
             .WithSummary("Register")
             .WithDescription("Register a new user")
-            .Produces<AuthResponse>(StatusCodes.Status200OK)
+            .Produces<AuthResponse>()
             .Produces<Error>(StatusCodes.Status400BadRequest)
             .AllowAnonymous();
 
@@ -29,7 +29,7 @@ public static class AuthEndpoints
             .WithName("Login")
             .WithSummary("Login")
             .WithDescription("Authenticate user and get tokens")
-            .Produces<AuthResponse>(StatusCodes.Status200OK)
+            .Produces<AuthResponse>()
             .Produces(StatusCodes.Status401Unauthorized)
             .AllowAnonymous();
 
@@ -37,7 +37,7 @@ public static class AuthEndpoints
             .WithName("Refresh")
             .WithSummary("Refresh Token")
             .WithDescription("Refresh access token using refresh token")
-            .Produces<AuthResponse>(StatusCodes.Status200OK)
+            .Produces<AuthResponse>()
             .Produces<Error>(StatusCodes.Status400BadRequest)
             .AllowAnonymous();
         
@@ -46,7 +46,7 @@ public static class AuthEndpoints
             .WithName("GetCurrentUser")
             .WithSummary("Get Current User")
             .WithDescription("Get current user information")
-            .Produces<UserResponse>(StatusCodes.Status200OK)
+            .Produces<UserResponse>()
             .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization();
 
@@ -54,7 +54,7 @@ public static class AuthEndpoints
             .WithName("UpdateProfile")
             .WithSummary("Update Profile")
             .WithDescription("Update user profile")
-            .Produces<UserResponse>(StatusCodes.Status200OK)
+            .Produces<UserResponse>()
             .Produces<Error>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization();
@@ -89,7 +89,7 @@ public static class AuthEndpoints
             .WithName("GetAllUsers")
             .WithSummary("Get All Users")
             .WithDescription("Get all users (Admin only)")
-            .Produces<List<UserResponse>>(StatusCodes.Status200OK)
+            .Produces<List<UserResponse>>()
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
             .RequireAuthorization("AdminPolicy");
@@ -98,7 +98,7 @@ public static class AuthEndpoints
             .WithName("SetUserRole")
             .WithSummary("Set User Role")
             .WithDescription("Set user role (Admin only)")
-            .Produces<UserResponse>(StatusCodes.Status200OK)
+            .Produces<UserResponse>()
             .Produces<Error>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
