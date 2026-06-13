@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using SceneDesign.Domain.Events;
 using SharedKernel.IntegrationEvents.SceneDesign;
 
-namespace SceneDesign.Infrastructure.Integration.Consumers.DomainEvents;
+namespace SceneDesign.Infrastructure.Integration.Consumers;
 
 public class SceneCreatedDomainEventConsumer(
     IPublishEndpoint publishEndpoint,

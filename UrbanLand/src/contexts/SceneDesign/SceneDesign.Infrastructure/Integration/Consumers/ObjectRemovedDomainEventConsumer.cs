@@ -4,7 +4,7 @@ using SceneDesign.Domain.Events;
 using SceneDesign.Domain.Repositories;
 using SharedKernel.IntegrationEvents.SceneDesign;
 
-namespace SceneDesign.Infrastructure.Integration.Consumers.DomainEvents;
+namespace SceneDesign.Infrastructure.Integration.Consumers;
 
 public class ObjectRemovedDomainEventConsumer(
     ISceneRepository sceneRepository,

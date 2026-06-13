@@ -2,7 +2,7 @@ using MassTransit;
 using Microsoft.Extensions.Logging;
 using SceneDesign.Domain.Events;
 
-namespace SceneDesign.Infrastructure.Integration.Consumers.DomainEvents;
+namespace SceneDesign.Infrastructure.Integration.Consumers;
 
 public class ObjectMovedDomainEventConsumer(
     ILogger<ObjectMovedDomainEventConsumer> logger)

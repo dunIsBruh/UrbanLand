@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SceneDesign.Domain.Repositories;
 using SceneDesign.Domain.Services;
+using SceneDesign.Infrastructure.Integration.Consumers;
 using SceneDesign.Infrastructure.Persistence;
 using SceneDesign.Infrastructure.Persistence.Repositories;
 using SceneDesign.Infrastructure.Services;
@@ -44,6 +45,6 @@ public static class SceneDesignInfrastructureRegistration
     public static void AddSceneDesignConsumers(this IBusRegistrationConfigurator configurator)
     {
         configurator.AddConsumers(
-            typeof(Integration.Consumers.DomainEvents.SceneCreatedDomainEventConsumer).Assembly);
+            typeof(SceneCreatedDomainEventConsumer).Assembly);
     }
 }

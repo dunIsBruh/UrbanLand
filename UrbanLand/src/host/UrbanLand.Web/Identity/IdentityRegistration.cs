@@ -126,6 +126,8 @@ public static class IdentityRegistration
     public static IEndpointRouteBuilder MapIdentityEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapAuthEndpoints();
+        app.MapProfileEndpoints();
+        app.MapAdminEndpoints();
         return app;
     }
 }

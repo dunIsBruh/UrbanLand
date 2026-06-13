@@ -1,4 +1,3 @@
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Application;
 using ProjectManagement.Infrastructure;
@@ -13,8 +12,6 @@ using AssetCatalog.Infrastructure;
 using AssetCatalog.Infrastructure.Persistence;
 using AssetCatalog.Presentation;
 using SharedKernel.Infrastructure.Caching;
-using SharedKernel.Infrastructure.Cors;
-using SharedKernel.Infrastructure.Messaging;
 using UrbanLand.Web.Identity;
 using UrbanLand.Web.Extensions;
 using UrbanLand.Web.Identity.Data;
@@ -27,24 +24,9 @@ builder.Host.UseSerilog((context, config) =>
     config.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddCustomSwagger();
-
 builder.Services.AddRedisCaching(builder.Configuration);
-
-builder.Services.AddCors(options =>
-{
-    var corsConfig = builder.Configuration.GetSection("Cors").Get<CorsConfiguration>();
-    
-    if (corsConfig?.AllowedOrigins != null)
-    {
-        options.AddDefaultPolicy(policy =>
-        {
-            policy.WithOrigins(corsConfig.AllowedOrigins)
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials();
-        });
-    }
-});
+builder.Services.AddCustomCors(builder.Configuration);
+builder.Services.AddCustomMassTransit(builder.Configuration);
 
 // identity subdomain
 builder.Services.AddIdentityModule(builder.Configuration);
@@ -66,33 +48,6 @@ builder.Services
     .AddAssetCatalogApplication()
     .AddAssetCatalogInfrastructure(builder.Configuration)
     .AddAssetCatalogPresentation();
-
-    var mtEnabled = builder.Configuration.GetValue<bool>("MassTransit:Enabled");
-    if (mtEnabled)
-    {
-        builder.Services.AddSharedMassTransit(
-            builder.Configuration, 
-            typeof(ProjectManagement.Infrastructure.Integration.Consumers.SceneStatisticsConsumer).Assembly,
-            typeof(SceneDesign.Infrastructure.Integration.Consumers.DomainEvents.SceneCreatedDomainEventConsumer).Assembly,
-            typeof(AssetCatalog.Infrastructure.Integration.Consumers.GetAssetInfoConsumer).Assembly
-        );
-    }
-    else
-    {
-        builder.Services.AddMassTransit(x =>
-        {
-            var pmAssembly = typeof(ProjectManagement.Infrastructure.Integration.Consumers.SceneStatisticsConsumer).Assembly;
-            var sdAssembly = typeof(SceneDesign.Infrastructure.Integration.Consumers.DomainEvents.SceneCreatedDomainEventConsumer).Assembly;
-            var acAssembly = typeof(AssetCatalog.Infrastructure.Integration.Consumers.GetAssetInfoConsumer).Assembly;
-            x.AddConsumers(pmAssembly);
-            x.AddConsumers(sdAssembly);
-            x.AddConsumers(acAssembly);
-            x.UsingInMemory((context, cfg) =>
-            {
-                cfg.ConfigureEndpoints(context);
-            });
-        });
-    }
 
 var app = builder.Build();
 
