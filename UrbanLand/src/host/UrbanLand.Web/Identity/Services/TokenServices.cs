@@ -10,6 +10,7 @@ using UrbanLand.Web.Identity.Data;
 using Microsoft.IdentityModel.Tokens;
 
 using System.IdentityModel.Tokens.Jwt;
+using UrbanLand.Web.Identity.Services.Tokens;
 
 namespace UrbanLand.Web.Identity.Services;
 
@@ -42,7 +43,7 @@ public class TokenService(
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
-        var accessToken = GenerateAccessToken(claims);
+        var accessToken = AccessTokenHandler.Write(claims, _jwtSettings);
         var jwtId = claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value;
 
         var refreshToken = await GenerateRefreshTokenAsync(user.Id, jwtId);
@@ -128,21 +129,6 @@ public class TokenService(
         await dbContext.SaveChangesAsync();
         
         logger.LogWarning("All refresh tokens revoked for user {UserId}", userId);
-    }
-
-    private string GenerateAccessToken(IEnumerable<Claim> claims)
-    {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-            audience: _jwtSettings.Audience,
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpirationMinutes),
-            signingCredentials: credentials);
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
     private async Task<RefreshToken> GenerateRefreshTokenAsync(Guid userId, string jwtId)
