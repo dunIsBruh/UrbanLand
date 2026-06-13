@@ -26,28 +26,15 @@ public class TokenService(
     {
         var roles = await userManager.GetRolesAsync(user);
         
-        // Создаем claims
-        var claims = new List<Claim>
-        {
-            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
-            new(JwtRegisteredClaimNames.Name, user.DisplayName),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new(ClaimTypes.Email, user.Email ?? string.Empty),
-            new(ClaimTypes.Name, user.DisplayName),
-        };
-
-        foreach (var role in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
-        }
-
+        var claims = ConfigureClaims(user, roles);
+        
         var accessToken = AccessTokenHandler.Write(claims, _jwtSettings);
         var jwtId = claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value;
 
-        var refreshToken = await GenerateRefreshTokenAsync(user.Id, jwtId);
-
+        var refreshToken = RefreshTokenGenerator.Generate(user.Id, jwtId, _jwtSettings);
+        await dbContext.RefreshTokens.AddAsync(refreshToken);
+        await dbContext.SaveChangesAsync();
+        
         return new AuthResponse
         {
             AccessToken = accessToken,
@@ -131,26 +118,6 @@ public class TokenService(
         logger.LogWarning("All refresh tokens revoked for user {UserId}", userId);
     }
 
-    private async Task<RefreshToken> GenerateRefreshTokenAsync(Guid userId, string jwtId)
-    {
-        var refreshToken = new RefreshToken
-        {
-            Id = Guid.NewGuid(),
-            Token = GenerateSecureToken(),
-            JwtId = jwtId,
-            UserId = userId,
-            CreatedAt = DateTime.UtcNow,
-            ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays),
-            IsUsed = false,
-            IsRevoked = false
-        };
-
-        await dbContext.RefreshTokens.AddAsync(refreshToken);
-        await dbContext.SaveChangesAsync();
-
-        return refreshToken;
-    }
-
     private ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
     {
         var tokenValidationParameters = new TokenValidationParameters
@@ -186,14 +153,6 @@ public class TokenService(
         }
     }
 
-    private static string GenerateSecureToken()
-    {
-        var randomBytes = new byte[64];
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(randomBytes);
-        return Convert.ToBase64String(randomBytes);
-    }
-
     private static UserResponse MapToUserResponse(ApplicationUser user, string role)
     {
         return new UserResponse
@@ -205,5 +164,26 @@ public class TokenService(
             Role = role,
             CreatedAt = user.CreatedAt
         };
+    }
+
+    private static List<Claim> ConfigureClaims(ApplicationUser user, IList<string> roles)
+    {
+        var claims = new List<Claim>
+        {
+            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
+            new(JwtRegisteredClaimNames.Name, user.DisplayName),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Email, user.Email ?? string.Empty),
+            new(ClaimTypes.Name, user.DisplayName),
+        };
+
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
+        
+        return claims;
     }
 }
