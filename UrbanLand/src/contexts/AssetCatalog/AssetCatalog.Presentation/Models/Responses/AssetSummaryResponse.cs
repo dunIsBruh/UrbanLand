@@ -1,6 +1,6 @@
 using AssetCatalog.Application.Queries.GetAssetsByCategory;
 
-namespace AssetCatalog.Presentation.Models;
+namespace AssetCatalog.Presentation.Models.Responses;
 
 /// <summary>
 /// Summary information about an asset in the catalog.

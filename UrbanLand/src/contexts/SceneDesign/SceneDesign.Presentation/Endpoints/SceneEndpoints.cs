@@ -9,7 +9,8 @@ using SceneDesign.Application.Commands.RemoveObject;
 using SceneDesign.Application.Commands.SwitchViewMode;
 using SceneDesign.Application.Queries.GetScene;
 using SceneDesign.Domain.Enums;
-using SceneDesign.Presentation.Models;
+using SceneDesign.Presentation.Models.Requests;
+using SceneDesign.Presentation.Models.Responses;
 using SharedKernel.Primitives;
 using static SceneDesign.Presentation.Endpoints.EndpointHelpers;
 

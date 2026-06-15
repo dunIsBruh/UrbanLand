@@ -1,4 +1,4 @@
-namespace AssetCatalog.Presentation.Models;
+namespace AssetCatalog.Presentation.Models.Responses;
 
 /// <summary>
 /// Response returned after an asset import operation.

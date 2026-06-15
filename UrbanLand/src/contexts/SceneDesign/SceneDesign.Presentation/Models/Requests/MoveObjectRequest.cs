@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SceneDesign.Presentation.Models;
+namespace SceneDesign.Presentation.Models.Requests;
 
 /// <summary>
 /// Request model for moving an object to a new position.

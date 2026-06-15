@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AssetCatalog.Presentation.Models;
+namespace AssetCatalog.Presentation.Models.Requests;
 
 /// <summary>
 /// Request model for importing a model from Sketchfab.

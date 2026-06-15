@@ -1,6 +1,6 @@
 using AssetCatalog.Application.Queries.GetAsset;
 
-namespace AssetCatalog.Presentation.Models;
+namespace AssetCatalog.Presentation.Models.Responses;
 
 /// <summary>
 /// Detailed information about an asset including versions and topographic symbol data.

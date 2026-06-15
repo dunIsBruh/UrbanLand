@@ -1,4 +1,4 @@
-namespace SceneDesign.Presentation.Models;
+namespace SceneDesign.Presentation.Models.Responses;
 
 /// <summary>
 /// Response returned after placing an object in the scene.

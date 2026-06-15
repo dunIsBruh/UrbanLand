@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SceneDesign.Presentation.Models;
+namespace SceneDesign.Presentation.Models.Requests;
 
 /// <summary>
 /// Request model for placing an object in the scene.

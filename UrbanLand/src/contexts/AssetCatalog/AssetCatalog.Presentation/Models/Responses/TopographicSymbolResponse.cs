@@ -1,4 +1,4 @@
-namespace AssetCatalog.Presentation.Models;
+namespace AssetCatalog.Presentation.Models.Responses;
 
 /// <summary>
 /// Topographic symbol data returned in list responses.

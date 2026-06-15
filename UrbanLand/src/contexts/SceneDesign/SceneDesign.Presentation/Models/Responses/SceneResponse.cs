@@ -1,6 +1,6 @@
 using SceneDesign.Application.Queries.GetScene;
 
-namespace SceneDesign.Presentation.Models;
+namespace SceneDesign.Presentation.Models.Responses;
 
 /// <summary>
 /// Detailed scene information including objects and layers.
