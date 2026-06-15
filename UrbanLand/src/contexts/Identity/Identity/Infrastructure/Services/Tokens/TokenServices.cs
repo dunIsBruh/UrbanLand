@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Identity.Infrastructure.Entities;
 using Identity.Infrastructure.Options;
 using Identity.Infrastructure.Persistence;
 using Identity.Presentation.Models.Responses;

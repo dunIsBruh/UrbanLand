@@ -1,5 +1,5 @@
 using System.Security.Cryptography;
-using Identity.Application.Entities;
+using Identity.Infrastructure.Entities;
 using Identity.Infrastructure.Options;
 
 namespace Identity.Infrastructure.Services.Tokens;

@@ -1,6 +1,7 @@
 using System.Text;
 using Identity.Application.Services;
 using Identity.Infrastructure;
+using Identity.Infrastructure.Entities;
 using Identity.Infrastructure.Options;
 using Identity.Infrastructure.Persistence;
 using Identity.Infrastructure.Services;

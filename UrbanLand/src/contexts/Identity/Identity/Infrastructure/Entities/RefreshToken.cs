@@ -1,6 +1,4 @@
-using Identity.Infrastructure;
-
-namespace Identity.Application.Entities;
+namespace Identity.Infrastructure.Entities;
  
 public class RefreshToken
 {

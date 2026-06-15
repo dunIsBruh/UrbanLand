@@ -1,4 +1,5 @@
 using Identity.Application;
+using Identity.Infrastructure.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Infrastructure.Persistence.Repositories;
