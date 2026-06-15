@@ -9,7 +9,8 @@ public static class EndpointHelpers
     {
         return error.Code switch
         {
-            "NotFound" or "Forbidden" => TypedResults.NotFound(new Error(error.Code, error.Message)),
+            "NotFound" => TypedResults.NotFound(new Error(error.Code, error.Message)),
+            "Forbidden" => TypedResults.Forbid(),
             _ => TypedResults.BadRequest(new Error(error.Code, error.Message))
         };
     }
