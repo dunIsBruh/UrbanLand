@@ -73,10 +73,10 @@ public static class InvitationEndpoints
         Guid projectId,
         AcceptInvitationRequest request,
         IMediator mediator,
-        HttpContext httpContext,
+        ICurrentUserAccessor userAccessor,
         CancellationToken ct)
     {
-        var userId = GetUserId(httpContext);
+        var userId = userAccessor.UserId;
 
         var command = new AcceptInvitationCommand(
             ProjectId.From(projectId),

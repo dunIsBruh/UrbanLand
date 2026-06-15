@@ -77,7 +77,7 @@ public static class AssetEndpoints
         if (category == null)
         {
             var all = await mediator.Send(new GetAssetsByCategoryQuery(AssetCategory.Vegetation), ct);
-            return TypedResults.Ok(all.Value.Select(AssetSummaryResponse.FromDto).ToList() ?? []);
+            return TypedResults.Ok(all.Value.Select(AssetSummaryResponse.FromDto).ToList());
         }
 
         var query = new GetAssetsByCategoryQuery(category.Value);

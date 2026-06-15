@@ -11,6 +11,7 @@ using ProjectManagement.Domain.ValueObjects;
 using ProjectManagement.Presentation.Models.Project;
 using ProjectManagement.Presentation.Models.ProjectMember;
 using ProjectManagement.Presentation.Models.ProjectSettings;
+using SharedKernel.Identity;
 using SharedKernel.Primitives;
 using static ProjectManagement.Presentation.Endpoints.EndpointHelpers;
 using ProjectId = SharedKernel.Contracts.ProjectId;
@@ -71,10 +72,10 @@ public static class ProjectEndpoints
     private static async Task<IResult> CreateProjectAsync(
         CreateProjectRequest request,
         IMediator mediator,
-        HttpContext httpContext,
+        ICurrentUserAccessor userAccessor,
         CancellationToken ct)
     {
-        var userId = GetUserId(httpContext);
+        var userId = userAccessor.UserId;
         if (userId == Guid.Empty)
         {
             return TypedResults.Unauthorized();
