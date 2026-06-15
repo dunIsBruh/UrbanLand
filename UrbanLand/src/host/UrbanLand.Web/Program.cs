@@ -11,11 +11,11 @@ using AssetCatalog.Application;
 using AssetCatalog.Infrastructure;
 using AssetCatalog.Infrastructure.Persistence;
 using AssetCatalog.Presentation;
+using Identity;
+using Identity.Infrastructure.Persistence;
 using SharedKernel.Infrastructure.Caching;
-using UrbanLand.Web.Identity;
 using UrbanLand.Web.Extensions;
 using Serilog;
-using UrbanLand.Web.Identity.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 

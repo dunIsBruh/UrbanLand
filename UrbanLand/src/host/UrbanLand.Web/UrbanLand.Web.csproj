@@ -11,6 +11,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\contexts\AssetCatalog\AssetCatalog.Domain\AssetCatalog.Domain.csproj" />
+      <ProjectReference Include="..\..\contexts\Identity\Identity\Identity.csproj" />
       <ProjectReference Include="..\..\contexts\ProjectManagement\ProjectManagement.Application\ProjectManagement.Application.csproj" />
       <ProjectReference Include="..\..\contexts\ProjectManagement\ProjectManagement.Domain\ProjectManagement.Domain.csproj" />
       <ProjectReference Include="..\..\contexts\ProjectManagement\ProjectManagement.Infrastructure\ProjectManagement.Infrastructure.csproj" />
@@ -39,10 +40,6 @@
       <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
       <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
       <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Identity\Presentation\" />
     </ItemGroup>
 
 </Project>
