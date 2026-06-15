@@ -8,14 +8,14 @@ namespace ProjectManagement.Application.Commands.AddMember;
 public class AddMemberCommandHandler : IRequestHandler<AddMemberCommand, Result>
 {
     private readonly IProjectRepository _projectRepository;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public AddMemberCommandHandler(
         IProjectRepository projectRepository,
-        ICurrentUserService currentUserService)
+        ICurrentUserAccessor currentUserAccessor)
     {
         _projectRepository = projectRepository;
-        _currentUserService = currentUserService;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     public async Task<Result> Handle(AddMemberCommand command, CancellationToken ct)
@@ -26,7 +26,7 @@ public class AddMemberCommandHandler : IRequestHandler<AddMemberCommand, Result>
             return Result.Failure(Error.NotFound("Project", command.ProjectId));
         }
 
-        var invitedBy = new UserId(_currentUserService.UserId);
+        var invitedBy = new UserId(_currentUserAccessor.UserId);
         return project.AddMember(command.UserId, command.Role, invitedBy);
     }
 }

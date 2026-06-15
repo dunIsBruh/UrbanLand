@@ -8,7 +8,7 @@ namespace ProjectManagement.Infrastructure.Persistence;
 
 public class ProjectManagementDbContext(
     DbContextOptions<ProjectManagementDbContext> options,
-    ICurrentUserService? currentUserService = null)
+    ICurrentUserAccessor? currentUserService = null)
     : DbContext(options)
 {
     public DbSet<Project> Projects => Set<Project>();

@@ -8,14 +8,14 @@ namespace ProjectManagement.Application.Commands.CreateInvitation;
 public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCommand, Result<CreateInvitationResult>>
 {
     private readonly IProjectRepository _projectRepository;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public CreateInvitationCommandHandler(
         IProjectRepository projectRepository,
-        ICurrentUserService currentUserService)
+        ICurrentUserAccessor currentUserAccessor)
     {
         _projectRepository = projectRepository;
-        _currentUserService = currentUserService;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     public async Task<Result<CreateInvitationResult>> Handle(CreateInvitationCommand command, CancellationToken ct)
@@ -24,7 +24,7 @@ public class CreateInvitationCommandHandler : IRequestHandler<CreateInvitationCo
         if (project == null)
             return Result<CreateInvitationResult>.Failure(Error.NotFound("Project", command.ProjectId));
 
-        var createdBy = new UserId(_currentUserService.UserId);
+        var createdBy = new UserId(_currentUserAccessor.UserId);
         var result = project.CreateInvitation(command.SuggestedRole, createdBy);
         if (result.IsFailure)
             return Result<CreateInvitationResult>.Failure(result.Error);

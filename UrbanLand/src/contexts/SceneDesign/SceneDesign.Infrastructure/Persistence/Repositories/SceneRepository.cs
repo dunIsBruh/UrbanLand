@@ -29,7 +29,9 @@ public class SceneRepository(SceneDesignDbContext context) : ISceneRepository
     {
         var entry = context.Entry(scene);
         if (entry.State == EntityState.Detached)
+        {
             context.Scenes.Add(scene);
+        }
 
         await context.SaveChangesAsync(ct);
     }

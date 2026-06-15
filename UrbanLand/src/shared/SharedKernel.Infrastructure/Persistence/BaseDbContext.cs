@@ -14,7 +14,7 @@ public abstract class BaseDbContext : DbContext
     protected BaseDbContext(
         DbContextOptions options,
         IMediator mediator,
-        ICurrentUserService? currentUserService = null)
+        ICurrentUserAccessor? currentUserService = null)
         : base(options)
     {
         _mediator = mediator;

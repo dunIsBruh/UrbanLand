@@ -10,7 +10,7 @@ namespace SceneDesign.Infrastructure.Persistence;
 public class SceneDesignDbContext(
     DbContextOptions<SceneDesignDbContext> options,
     IPublishEndpoint publishEndpoint,
-    ICurrentUserService? currentUserService = null)
+    ICurrentUserAccessor? currentUserService = null)
     : DbContext(options)
 {
     public DbSet<Scene> Scenes => Set<Scene>();

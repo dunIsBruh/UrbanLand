@@ -8,19 +8,19 @@ namespace ProjectManagement.Application.Queries.GetUserProjects;
 public class GetUserProjectsQueryHandler : IRequestHandler<GetUserProjectsQuery, Result<List<UserProjectDto>>>
 {
     private readonly IProjectRepository _projectRepository;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public GetUserProjectsQueryHandler(
         IProjectRepository projectRepository,
-        ICurrentUserService currentUserService)
+        ICurrentUserAccessor currentUserAccessor)
     {
         _projectRepository = projectRepository;
-        _currentUserService = currentUserService;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     public async Task<Result<List<UserProjectDto>>> Handle(GetUserProjectsQuery query, CancellationToken ct)
     {
-        var userId = new UserId(_currentUserService.UserId);
+        var userId = new UserId(_currentUserAccessor.UserId);
         var projects = await _projectRepository.GetByUserIdAsync(userId, ct);
 
         var dtos = projects.Select(p => new UserProjectDto(

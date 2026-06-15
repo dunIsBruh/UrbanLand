@@ -8,14 +8,14 @@ namespace ProjectManagement.Application.Commands.AcceptInvitation;
 public class AcceptInvitationCommandHandler : IRequestHandler<AcceptInvitationCommand, Result<string>>
 {
     private readonly IProjectRepository _projectRepository;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public AcceptInvitationCommandHandler(
         IProjectRepository projectRepository,
-        ICurrentUserService currentUserService)
+        ICurrentUserAccessor currentUserAccessor)
     {
         _projectRepository = projectRepository;
-        _currentUserService = currentUserService;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     public async Task<Result<string>> Handle(AcceptInvitationCommand command, CancellationToken ct)

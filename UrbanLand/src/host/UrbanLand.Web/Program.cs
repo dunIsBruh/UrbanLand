@@ -14,9 +14,8 @@ using AssetCatalog.Presentation;
 using SharedKernel.Infrastructure.Caching;
 using UrbanLand.Web.Identity;
 using UrbanLand.Web.Extensions;
-using UrbanLand.Web.Identity.Data;
-
 using Serilog;
+using UrbanLand.Web.Identity.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -5,10 +5,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SharedKernel.Identity;
-using UrbanLand.Web.Identity.Configurations;
-using UrbanLand.Web.Identity.Data;
-using UrbanLand.Web.Identity.Endpoints;
-using UrbanLand.Web.Identity.Services;
+using UrbanLand.Web.Identity.Application.Services;
+using UrbanLand.Web.Identity.Infrastructure;
+using UrbanLand.Web.Identity.Infrastructure.Options;
+using UrbanLand.Web.Identity.Infrastructure.Persistence;
+using UrbanLand.Web.Identity.Infrastructure.Services;
+using UrbanLand.Web.Identity.Infrastructure.Services.Tokens;
+using UrbanLand.Web.Identity.Presentation.Endpoints;
 
 namespace UrbanLand.Web.Identity;
 
@@ -22,8 +25,7 @@ public static class IdentityRegistration
             ?? throw new InvalidOperationException("JWT settings not found");
 
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
-        services.Configure<IdentityConfiguration>(
-            configuration.GetSection(IdentityConfiguration.SectionName));
+        services.Configure<IdentityConfiguration>(configuration.GetSection(IdentityConfiguration.SectionName));
         
         var identityConfig = configuration.GetSection(IdentityConfiguration.SectionName)
             .Get<IdentityConfiguration>();
@@ -61,8 +63,7 @@ public static class IdentityRegistration
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = jwtSettings.Issuer,
                 ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
                 ClockSkew = TimeSpan.Zero
             };
 
@@ -73,8 +74,7 @@ public static class IdentityRegistration
                     var accessToken = context.Request.Query["access_token"];
                     var path = context.HttpContext.Request.Path;
 
-                    if (!string.IsNullOrEmpty(accessToken) && 
-                        path.StartsWithSegments("/hubs"))
+                    if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
                     {
                         context.Token = accessToken;
                     }
@@ -85,8 +85,7 @@ public static class IdentityRegistration
         });
         
         services.AddAuthorizationBuilder()
-                    .AddPolicy("AdminPolicy", policy =>
-                policy.RequireRole("Admin"))
+                    .AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"))
                     .SetDefaultPolicy(new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build());
@@ -106,16 +105,11 @@ public static class IdentityRegistration
         });
         
         services.AddScoped<TokenService>();
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
         
-        // Регистрируем UserService для ВСЕХ доменных интерфейсов
-        services.AddScoped<UserService>();
-        services.AddScoped<ProjectManagement.Domain.Services.IUserService>(
-            sp => sp.GetRequiredService<UserService>());
-        services.AddScoped<SceneDesign.Domain.Services.IUserService>(
-            sp => sp.GetRequiredService<UserService>());
-        services.AddScoped<AssetCatalog.Domain.Services.IUserService>(
-            sp => sp.GetRequiredService<UserService>());
+        services.AddScoped<IUserService, IdentityUserService>();
+        services.AddScoped<IAdminService, IdentityAdminService>();
+        services.AddScoped<IAuthService, AuthIdentityService>();
 
         services.AddMemoryCache();
         services.AddHttpContextAccessor();

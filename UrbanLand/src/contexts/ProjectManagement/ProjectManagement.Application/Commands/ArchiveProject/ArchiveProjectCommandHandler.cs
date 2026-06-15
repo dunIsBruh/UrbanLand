@@ -11,16 +11,16 @@ public class ArchiveProjectCommandHandler : IRequestHandler<ArchiveProjectComman
 {
     private readonly IProjectRepository _projectRepository;
     private readonly IPublishEndpoint _publishEndpoint;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public ArchiveProjectCommandHandler(
         IProjectRepository projectRepository,
         IPublishEndpoint publishEndpoint,
-        ICurrentUserService currentUserService)
+        ICurrentUserAccessor currentUserAccessor)
     {
         _projectRepository = projectRepository;
         _publishEndpoint = publishEndpoint;
-        _currentUserService = currentUserService;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     public async Task<Result> Handle(ArchiveProjectCommand command, CancellationToken ct)
@@ -31,7 +31,7 @@ public class ArchiveProjectCommandHandler : IRequestHandler<ArchiveProjectComman
             return Result.Failure(Error.NotFound("Project", command.ProjectId));
         }
 
-        var userId = new UserId(_currentUserService.UserId);
+        var userId = new UserId(_currentUserAccessor.UserId);
         var result = project.Archive(userId);
         if (result.IsFailure)
         {

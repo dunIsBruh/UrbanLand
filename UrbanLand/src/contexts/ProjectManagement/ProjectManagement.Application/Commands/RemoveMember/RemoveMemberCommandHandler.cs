@@ -8,14 +8,14 @@ namespace ProjectManagement.Application.Commands.RemoveMember;
 public class RemoveMemberCommandHandler : IRequestHandler<RemoveMemberCommand, Result>
 {
     private readonly IProjectRepository _projectRepository;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public RemoveMemberCommandHandler(
         IProjectRepository projectRepository,
-        ICurrentUserService currentUserService)
+        ICurrentUserAccessor currentUserAccessor)
     {
         _projectRepository = projectRepository;
-        _currentUserService = currentUserService;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     public async Task<Result> Handle(RemoveMemberCommand command, CancellationToken ct)
@@ -26,7 +26,7 @@ public class RemoveMemberCommandHandler : IRequestHandler<RemoveMemberCommand, R
             return Result.Failure(Error.NotFound("Project", command.ProjectId));
         }
 
-        var removedBy = new UserId(_currentUserService.UserId);
+        var removedBy = new UserId(_currentUserAccessor.UserId);
         return project.RemoveMember(command.UserId, removedBy);
     }
 }

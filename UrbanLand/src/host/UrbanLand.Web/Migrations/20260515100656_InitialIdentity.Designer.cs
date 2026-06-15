@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using UrbanLand.Web.Identity.Data;
+using UrbanLand.Web.Identity.Infrastructure.Persistence;
 
 #nullable disable
 

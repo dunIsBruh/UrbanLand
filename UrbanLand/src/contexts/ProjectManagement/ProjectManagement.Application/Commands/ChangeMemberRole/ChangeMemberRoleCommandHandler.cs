@@ -8,14 +8,14 @@ namespace ProjectManagement.Application.Commands.ChangeMemberRole;
 public class ChangeMemberRoleCommandHandler : IRequestHandler<ChangeMemberRoleCommand, Result>
 {
     private readonly IProjectRepository _projectRepository;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public ChangeMemberRoleCommandHandler(
         IProjectRepository projectRepository,
-        ICurrentUserService currentUserService)
+        ICurrentUserAccessor currentUserAccessor)
     {
         _projectRepository = projectRepository;
-        _currentUserService = currentUserService;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     public async Task<Result> Handle(ChangeMemberRoleCommand command, CancellationToken ct)
@@ -26,7 +26,7 @@ public class ChangeMemberRoleCommandHandler : IRequestHandler<ChangeMemberRoleCo
             return Result.Failure(Error.NotFound("Project", command.ProjectId));
         }
 
-        var changedBy = new UserId(_currentUserService.UserId);
+        var changedBy = new UserId(_currentUserAccessor.UserId);
         return project.ChangeRole(command.UserId, command.NewRole, changedBy);
     }
 }

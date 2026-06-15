@@ -14,12 +14,12 @@ public class ImportFromSketchfabCommandHandler(
     ISketchfabService sketchfabService,
     IAssetRepository assetRepository,
     IPublishEndpoint publishEndpoint,
-    ICurrentUserService currentUserService)
+    ICurrentUserAccessor currentUserAccessor)
     : IRequestHandler<ImportFromSketchfabCommand, Result<AssetId>>
 {
     public async Task<Result<AssetId>> Handle(ImportFromSketchfabCommand command, CancellationToken ct)
     {
-        var uploaderId = new UserId(currentUserService.UserId);
+        var uploaderId = new UserId(currentUserAccessor.UserId);
 
         var modelData = await sketchfabService.DownloadModelAsync(command.SketchfabModelId);
         if (modelData == null)
