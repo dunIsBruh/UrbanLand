@@ -18,17 +18,18 @@ public static class ProjectManagementInfrastructureRegistration
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<ProjectManagementDbContext>((sp, options) =>
+        services.AddDbContext<ProjectManagementDbContext>((_, options) =>
         {
-            var connectionString = configuration.GetConnectionString("ProjectManagement");
+            // var connectionString = configuration.GetConnectionString("ProjectManagement");
+            var connectionString = configuration["DatabaseConnection"];
             
             options.UseNpgsql(connectionString, npgsqlOptions =>
             {
-                npgsqlOptions.MigrationsAssembly(
-                    typeof(ProjectManagementDbContext).Assembly.FullName);
+                npgsqlOptions.MigrationsAssembly(typeof(ProjectManagementDbContext).Assembly.FullName);
                 npgsqlOptions.MigrationsHistoryTable(
                     "__EFMigrationsHistory", 
-                    "project_management");
+                    "project_management"
+                    );
             });
             
             options.UseSnakeCaseNamingConvention();

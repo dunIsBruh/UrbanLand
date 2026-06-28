@@ -8,13 +8,13 @@ public class AssetCatalogDbContextFactory : IDesignTimeDbContextFactory<AssetCat
     public AssetCatalogDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AssetCatalogDbContext>();
-        var connectionString = Environment.GetEnvironmentVariable("ASSETCATALOG_CONNECTION_STRING")
-            ?? "Host=localhost;Port=5432;Database=urbanland_assetcatalog;Username=postgres;Password=postgres";
+        
+        var connectionString = args.FirstOrDefault()
+            ?? "Host=localhost;Port=5433;Database=postgres;Username=admin;Password=20admin26";
 
         optionsBuilder.UseNpgsql(connectionString, npgsqlOptions =>
         {
-            npgsqlOptions.MigrationsAssembly(
-                typeof(AssetCatalogDbContext).Assembly.FullName);
+            npgsqlOptions.MigrationsAssembly(typeof(AssetCatalogDbContext).Assembly.FullName);
             npgsqlOptions.MigrationsHistoryTable(
                 "__EFMigrationsHistory",
                 "asset_catalog");

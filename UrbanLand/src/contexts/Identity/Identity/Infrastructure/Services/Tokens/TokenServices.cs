@@ -157,7 +157,7 @@ public class TokenService(
         return new UserResponse
         {
             Id = user.Id,
-            Email = user.Email,
+            Email = user.Email ?? "",
             DisplayName = user.DisplayName,
             AvatarUrl = user.AvatarUrl,
             Role = role,
@@ -170,11 +170,11 @@ public class TokenService(
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email),
+            new(JwtRegisteredClaimNames.Email, user.Email ?? ""),
             new(JwtRegisteredClaimNames.Name, user.DisplayName),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.Email, user.Email ?? ""),
             new(ClaimTypes.Name, user.DisplayName),
         };
 

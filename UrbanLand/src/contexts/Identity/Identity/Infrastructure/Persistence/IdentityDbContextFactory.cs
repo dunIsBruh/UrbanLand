@@ -8,14 +8,12 @@ public class IdentityDbContextFactory : IDesignTimeDbContextFactory<IdentityDbCo
 {
     public IdentityDbContext CreateDbContext(string[] args)
     {
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.Development.json")
-            .Build();
-
         var optionsBuilder = new DbContextOptionsBuilder<IdentityDbContext>();
-        optionsBuilder.UseNpgsql(
-            configuration.GetConnectionString("Identity"),
+        
+        var connectionString = args.FirstOrDefault()
+                               ?? "Host=localhost;Port=5433;Database=postgres;Username=admin;Password=20admin26";
+        
+        optionsBuilder.UseNpgsql(connectionString,
             npgsqlOptions =>
             {
                 npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "identity");

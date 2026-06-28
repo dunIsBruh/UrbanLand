@@ -24,7 +24,7 @@ public class IdentityAdminService(UserManager<ApplicationUser> userManager) : IA
             userResponses.Add(new UserResponse
             {
                 Id = user.Id,
-                Email = user.Email,
+                Email = user.Email ?? "",
                 DisplayName = user.DisplayName,
                 AvatarUrl = user.AvatarUrl,
                 Role = roles.FirstOrDefault() ?? "User",
@@ -53,7 +53,7 @@ public class IdentityAdminService(UserManager<ApplicationUser> userManager) : IA
         return Result<UserResponse>.Success(new UserResponse
         {
             Id = user.Id,
-            Email = user.Email,
+            Email = user.Email ?? "",
             DisplayName = user.DisplayName,
             AvatarUrl = user.AvatarUrl,
             Role = role,

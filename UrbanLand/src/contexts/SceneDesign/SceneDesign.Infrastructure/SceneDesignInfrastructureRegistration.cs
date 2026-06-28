@@ -19,12 +19,12 @@ public static class SceneDesignInfrastructureRegistration
     {
         services.AddDbContext<SceneDesignDbContext>((_, options) =>
         {
-            var connectionString = configuration.GetConnectionString("SceneDesign");
+            // var connectionString = configuration.GetConnectionString("SceneDesign");
+            var connectionString = configuration["DatabaseConnection"];
 
             options.UseNpgsql(connectionString, npgsqlOptions =>
             {
-                npgsqlOptions.MigrationsAssembly(
-                    typeof(SceneDesignDbContext).Assembly.FullName);
+                npgsqlOptions.MigrationsAssembly(typeof(SceneDesignDbContext).Assembly.FullName);
                 npgsqlOptions.MigrationsHistoryTable(
                     "__EFMigrationsHistory",
                     "scene_design");
@@ -44,7 +44,6 @@ public static class SceneDesignInfrastructureRegistration
 
     public static void AddSceneDesignConsumers(this IBusRegistrationConfigurator configurator)
     {
-        configurator.AddConsumers(
-            typeof(SceneCreatedDomainEventConsumer).Assembly);
+        configurator.AddConsumers(typeof(SceneCreatedDomainEventConsumer).Assembly);
     }
 }

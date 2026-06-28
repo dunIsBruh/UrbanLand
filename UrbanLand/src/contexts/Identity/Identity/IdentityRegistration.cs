@@ -1,6 +1,5 @@
 using System.Text;
 using Identity.Application.Services;
-using Identity.Infrastructure;
 using Identity.Infrastructure.Entities;
 using Identity.Infrastructure.Options;
 using Identity.Infrastructure.Persistence;
@@ -96,8 +95,11 @@ public static class IdentityRegistration
         
         services.AddDbContext<IdentityDbContext>(options =>
         {
+            // var connectionString = configuration.GetConnectionString("Identity");
+            var connectionString = configuration["DatabaseConnection"];
+            
             options.UseNpgsql(
-                configuration.GetConnectionString("Identity"),
+                connectionString,
                 npgsqlOptions =>
                 {
                     npgsqlOptions.MigrationsHistoryTable(

@@ -19,8 +19,9 @@ public static class AssetCatalogInfrastructureRegistration
     {
         services.AddDbContext<AssetCatalogDbContext>((_, options) =>
         {
-            var connectionString = configuration.GetConnectionString("AssetCatalog");
-
+            // var connectionString = configuration.GetConnectionString("AssetCatalog");
+            var connectionString = configuration["DatabaseConnection"];
+            
             options.UseNpgsql(connectionString, npgsqlOptions =>
             {
                 npgsqlOptions.MigrationsAssembly(
@@ -31,8 +32,7 @@ public static class AssetCatalogInfrastructureRegistration
             });
 
             options.UseSnakeCaseNamingConvention();
-            options.EnableSensitiveDataLogging(
-                configuration.GetValue<bool>("Logging:EnableSensitiveDataLogging"));
+            options.EnableSensitiveDataLogging(configuration.GetValue<bool>("Logging:EnableSensitiveDataLogging"));
         });
 
         services.AddScoped<IAssetRepository, AssetRepository>();
