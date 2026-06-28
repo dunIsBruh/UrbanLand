@@ -17,7 +17,7 @@ public static class AssetCatalogInfrastructureRegistration
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<AssetCatalogDbContext>((sp, options) =>
+        services.AddDbContext<AssetCatalogDbContext>((_, options) =>
         {
             var connectionString = configuration.GetConnectionString("AssetCatalog");
 
