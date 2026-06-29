@@ -98,7 +98,9 @@ public class AssetTemplate : AggregateRoot<AssetId>
         TopographicSymbol symbol)
     {
         if (string.IsNullOrWhiteSpace(name))
+        {
             return Result<AssetTemplate>.Failure(Error.Validation("Template name is required"));
+        }
 
         var asset = new AssetTemplate(AssetId.New(), name, uploaderId, description)
         {

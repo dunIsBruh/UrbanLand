@@ -24,9 +24,9 @@ public class ProjectMember : Entity<ProjectMemberId>
         JoinedAt = DateTime.UtcNow;
     }
 
-    public UserId MemberId { get; private set; } = default!;
-    public ProjectId ProjectId { get; private set; } = default!;
-    public ProjectRole Role { get; private set; } = default!;
+    public UserId MemberId { get; private set; } = null!;
+    public ProjectId ProjectId { get; private set; } = null!;
+    public ProjectRole Role { get; private set; } = null!;
     public UserId? InvitedBy { get; private set; }
     public DateTime JoinedAt { get; private set; }
     

@@ -14,10 +14,6 @@ public record Dimensions : ValueObject
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(height);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(depth);
 
-        // Guard.AgainstNegativeOrZero((decimal)width);
-        // Guard.AgainstNegativeOrZero((decimal)height);
-        // Guard.AgainstNegativeOrZero((decimal)depth);
-
         Width = width;
         Height = height;
         Depth = depth;

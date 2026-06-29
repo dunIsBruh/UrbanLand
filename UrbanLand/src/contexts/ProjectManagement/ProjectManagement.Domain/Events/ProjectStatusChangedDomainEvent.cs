@@ -1,5 +1,4 @@
 using ProjectManagement.Domain.Enums;
-using ProjectManagement.Domain.ValueObjects;
 using SharedKernel.Abstractions;
 using ProjectId = SharedKernel.Contracts.ProjectId;
 
