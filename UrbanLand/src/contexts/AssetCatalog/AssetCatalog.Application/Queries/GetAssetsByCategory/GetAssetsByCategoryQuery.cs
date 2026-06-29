@@ -1,6 +1,6 @@
 using AssetCatalog.Domain.Enums;
 using MediatR;
-using SharedKernel.Primitives;
+using Core.Primitives;
 
 namespace AssetCatalog.Application.Queries.GetAssetsByCategory;
 

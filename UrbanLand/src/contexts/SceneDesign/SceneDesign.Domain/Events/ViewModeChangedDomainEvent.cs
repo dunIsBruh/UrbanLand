@@ -1,6 +1,6 @@
+using Core.Abstractions;
 using SceneDesign.Domain.Enums;
 using SceneDesign.Domain.ValueObjects;
-using SharedKernel.Abstractions;
 
 namespace SceneDesign.Domain.Events;
 

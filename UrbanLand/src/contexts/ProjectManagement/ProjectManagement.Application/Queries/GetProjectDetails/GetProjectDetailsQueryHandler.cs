@@ -1,8 +1,10 @@
+using Core.Identity;
+using Core.Primitives;
 using MediatR;
 using ProjectManagement.Domain.Repositories;
 using ProjectManagement.Domain.Services;
-using SharedKernel.Identity;
-using SharedKernel.Primitives;
+using Core.Identity;
+using Core.Primitives;
 
 namespace ProjectManagement.Application.Queries.GetProjectDetails;
 

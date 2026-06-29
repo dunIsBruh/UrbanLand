@@ -1,3 +1,5 @@
+using Core.Primitives;
+using Core.Web;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -11,8 +13,6 @@ using SceneDesign.Application.Queries.GetScene;
 using SceneDesign.Domain.Enums;
 using SceneDesign.Presentation.Models.Requests;
 using SceneDesign.Presentation.Models.Responses;
-using SharedKernel.Primitives;
-using static SceneDesign.Presentation.Endpoints.EndpointHelpers;
 
 namespace SceneDesign.Presentation.Endpoints;
 
@@ -105,7 +105,7 @@ public static class SceneEndpoints
 
         return result.Match<SceneDto, IResult>(
             onSuccess: dto => TypedResults.Ok(SceneResponse.FromDto(dto)),
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 
@@ -162,7 +162,7 @@ public static class SceneEndpoints
 
         return result.Match(
             onSuccess: TypedResults.NoContent,
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 
@@ -177,7 +177,7 @@ public static class SceneEndpoints
 
         return result.Match(
             onSuccess: TypedResults.NoContent,
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 
@@ -197,7 +197,7 @@ public static class SceneEndpoints
 
         return result.Match(
             onSuccess: TypedResults.NoContent,
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 }

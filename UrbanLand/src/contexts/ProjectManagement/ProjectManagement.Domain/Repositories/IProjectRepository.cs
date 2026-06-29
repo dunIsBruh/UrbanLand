@@ -1,8 +1,7 @@
+using Core.Abstractions;
+using Core.Identity;
 using ProjectManagement.Domain.Entities;
-using ProjectManagement.Domain.ValueObjects;
-using SharedKernel.Abstractions;
-using SharedKernel.Identity;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Domain.Repositories;
 

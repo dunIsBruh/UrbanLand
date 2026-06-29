@@ -3,7 +3,7 @@ using AssetCatalog.Domain.Enums;
 using AssetCatalog.Domain.Repositories;
 using AssetCatalog.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel.Identity;
+using Core.Identity;
 
 namespace AssetCatalog.Infrastructure.Persistence.Repositories;
 

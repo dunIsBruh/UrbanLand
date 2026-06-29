@@ -3,9 +3,9 @@ using AssetCatalog.Domain.Repositories;
 using AssetCatalog.Domain.ValueObjects;
 using MassTransit;
 using MediatR;
-using SharedKernel.Identity;
-using SharedKernel.IntegrationEvents.AssetCatalog;
-using SharedKernel.Primitives;
+using Core.Identity;
+using Core.IntegrationEvents.AssetCatalog;
+using Core.Primitives;
 
 namespace AssetCatalog.Application.Commands.ImportCustomAsset;
 

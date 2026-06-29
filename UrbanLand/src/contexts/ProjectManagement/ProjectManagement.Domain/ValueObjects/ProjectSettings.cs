@@ -1,5 +1,5 @@
+using Core.Abstractions;
 using ProjectManagement.Domain.Enums;
-using SharedKernel.Abstractions;
 
 namespace ProjectManagement.Domain.ValueObjects;
 

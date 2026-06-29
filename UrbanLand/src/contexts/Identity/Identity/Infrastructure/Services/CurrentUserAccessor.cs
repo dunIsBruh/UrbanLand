@@ -1,6 +1,6 @@
 using System.Security.Claims;
+using Core.Identity;
 using Microsoft.AspNetCore.Http;
-using SharedKernel.Identity;
 
 namespace Identity.Infrastructure.Services;
 

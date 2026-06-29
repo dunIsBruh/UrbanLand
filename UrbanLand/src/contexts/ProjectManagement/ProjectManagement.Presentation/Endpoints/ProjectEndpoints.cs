@@ -7,14 +7,13 @@ using ProjectManagement.Application.Commands.CreateProject;
 using ProjectManagement.Application.Commands.UpdateSettings;
 using ProjectManagement.Application.Queries.GetProjectDetails;
 using ProjectManagement.Application.Queries.GetUserProjects;
-using ProjectManagement.Domain.ValueObjects;
 using ProjectManagement.Presentation.Models.Project;
 using ProjectManagement.Presentation.Models.ProjectMember;
 using ProjectManagement.Presentation.Models.ProjectSettings;
-using SharedKernel.Identity;
-using SharedKernel.Primitives;
-using static ProjectManagement.Presentation.Endpoints.EndpointHelpers;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using Core.Identity;
+using Core.Primitives;
+using Core.Web;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Presentation.Endpoints;
 
@@ -112,7 +111,7 @@ public static class ProjectEndpoints
 
         return result.Match(
             onSuccess: TypedResults.NoContent,
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 
@@ -134,7 +133,7 @@ public static class ProjectEndpoints
 
         return result.Match(
             onSuccess: TypedResults.NoContent,
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 

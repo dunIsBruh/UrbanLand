@@ -1,10 +1,10 @@
 using AssetCatalog.Domain.Enums;
 using AssetCatalog.Domain.Events;
 using AssetCatalog.Domain.ValueObjects;
-using SharedKernel.Abstractions;
-using SharedKernel.Exceptions;
-using SharedKernel.Identity;
-using SharedKernel.Primitives;
+using Core.Abstractions;
+using Core.Exceptions;
+using Core.Identity;
+using Core.Primitives;
 
 namespace AssetCatalog.Domain.Entities;
 

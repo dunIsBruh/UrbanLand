@@ -1,5 +1,5 @@
+using Core.Abstractions;
 using SceneDesign.Domain.Enums;
-using SharedKernel.Abstractions;
 
 namespace SceneDesign.Domain.ValueObjects;
 

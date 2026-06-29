@@ -1,8 +1,8 @@
+using Core.Contracts;
 using Microsoft.EntityFrameworkCore;
 using SceneDesign.Domain.Entities;
 using SceneDesign.Domain.Repositories;
 using SceneDesign.Domain.ValueObjects;
-using ProjectId = SharedKernel.Contracts.ProjectId;
 
 namespace SceneDesign.Infrastructure.Persistence.Repositories;
 

@@ -23,8 +23,7 @@
       <ProjectReference Include="..\..\contexts\AssetCatalog\AssetCatalog.Application\AssetCatalog.Application.csproj" />
       <ProjectReference Include="..\..\contexts\AssetCatalog\AssetCatalog.Infrastructure\AssetCatalog.Infrastructure.csproj" />
       <ProjectReference Include="..\..\contexts\AssetCatalog\AssetCatalog.Presentation\AssetCatalog.Presentation.csproj" />
-      <ProjectReference Include="..\..\shared\SharedKernel.Infrastructure\SharedKernel.Infrastructure.csproj" />
-      <ProjectReference Include="..\..\shared\SharedKernel\SharedKernel.csproj" />
+      <ProjectReference Include="..\..\core\Core.Infrastructure\Core.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

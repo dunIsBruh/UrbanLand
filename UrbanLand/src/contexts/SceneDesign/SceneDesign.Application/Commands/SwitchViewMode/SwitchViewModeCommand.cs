@@ -1,6 +1,6 @@
+using Core.Primitives;
 using MediatR;
 using SceneDesign.Domain.Enums;
-using SharedKernel.Primitives;
 
 namespace SceneDesign.Application.Commands.SwitchViewMode;
 

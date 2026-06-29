@@ -1,5 +1,5 @@
 using ProjectManagement.Domain.Services;
-using SharedKernel.Identity;
+using Core.Identity;
 
 namespace ProjectManagement.Infrastructure.Adapters;
 

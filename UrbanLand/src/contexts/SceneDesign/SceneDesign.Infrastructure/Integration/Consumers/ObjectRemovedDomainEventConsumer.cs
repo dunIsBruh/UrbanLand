@@ -1,8 +1,8 @@
+using Core.IntegrationEvents.SceneDesign;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using SceneDesign.Domain.Events;
 using SceneDesign.Domain.Repositories;
-using SharedKernel.IntegrationEvents.SceneDesign;
 
 namespace SceneDesign.Infrastructure.Integration.Consumers;
 

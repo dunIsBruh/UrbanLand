@@ -1,7 +1,7 @@
+using Core.Primitives;
 using MediatR;
 using SceneDesign.Domain.Repositories;
 using SceneDesign.Domain.ValueObjects;
-using SharedKernel.Primitives;
 using SceneDesign.Domain.Entities;
 
 namespace SceneDesign.Application.Queries.GetSceneObjects;
@@ -16,7 +16,9 @@ public class GetSceneObjectsQueryHandler(
         var scene = await sceneRepository.GetByIdAsync(sceneId, ct);
 
         if (scene == null)
+        {
             return Result<List<SceneObjectDto>>.Failure(Error.NotFound(nameof(Scene), sceneId));
+        }
 
         var dtos = scene.Objects.Select(SceneObjectDto.FromDomain).ToList();
         return Result<List<SceneObjectDto>>.Success(dtos);

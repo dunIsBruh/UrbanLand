@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\shared\SharedKernel\SharedKernel.csproj" />
       <ProjectReference Include="..\SceneDesign.Application\SceneDesign.Application.csproj" />
       <ProjectReference Include="..\SceneDesign.Domain\SceneDesign.Domain.csproj" />
+      <ProjectReference Include="..\..\..\core\Core.Infrastructure\Core.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

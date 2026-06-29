@@ -1,5 +1,6 @@
+using Core.Primitives;
 using MediatR;
-using SharedKernel.Primitives;
+using Core.Primitives;
 
 namespace ProjectManagement.Application.Queries.GetUserProjects;
 

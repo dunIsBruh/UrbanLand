@@ -1,6 +1,6 @@
 using AssetCatalog.Domain.ValueObjects;
 using MediatR;
-using SharedKernel.Primitives;
+using Core.Primitives;
 
 namespace AssetCatalog.Application.Commands.ImportCustomAsset;
 

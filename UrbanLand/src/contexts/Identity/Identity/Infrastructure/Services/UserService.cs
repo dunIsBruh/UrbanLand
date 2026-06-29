@@ -1,7 +1,7 @@
 // using Microsoft.AspNetCore.Identity;
 // using Microsoft.EntityFrameworkCore;
 // using Microsoft.Extensions.Caching.Memory;
-// using SharedKernel.Identity;
+// using Core.Identity;
 // using UrbanLand.Web.Identity.Application.Entities;
 //
 // namespace UrbanLand.Web.Identity.Application.Services;

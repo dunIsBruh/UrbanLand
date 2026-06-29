@@ -1,4 +1,4 @@
-using SharedKernel.Infrastructure.Cors;
+using Core.Infrastructure.Cors;
 
 namespace UrbanLand.Web.Extensions;
 

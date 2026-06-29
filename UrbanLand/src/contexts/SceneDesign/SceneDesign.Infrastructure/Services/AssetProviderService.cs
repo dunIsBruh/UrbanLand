@@ -1,9 +1,9 @@
+using Core.IntegrationEvents.SceneDesign;
+using Core.Primitives;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using SceneDesign.Domain.Services;
 using SceneDesign.Domain.ValueObjects;
-using SharedKernel.IntegrationEvents.SceneDesign;
-using SharedKernel.Primitives;
 
 namespace SceneDesign.Infrastructure.Services;
 

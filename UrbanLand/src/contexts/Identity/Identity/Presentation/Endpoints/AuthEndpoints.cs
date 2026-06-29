@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Core.Primitives;
 using Identity.Application.Services;
 using Identity.Infrastructure.Services;
 using Identity.Infrastructure.Services.Tokens;
@@ -8,7 +9,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using SharedKernel.Primitives;
 
 namespace Identity.Presentation.Endpoints;
 

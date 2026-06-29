@@ -1,7 +1,7 @@
 using AssetCatalog.Domain.Entities;
 using AssetCatalog.Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel.Abstractions;
+using Core.Abstractions;
 
 namespace AssetCatalog.Infrastructure.Persistence;
 

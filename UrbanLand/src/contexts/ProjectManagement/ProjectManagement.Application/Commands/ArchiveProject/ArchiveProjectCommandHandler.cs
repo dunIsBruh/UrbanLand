@@ -1,9 +1,12 @@
+using Core.Identity;
+using Core.Primitives;
 using MassTransit;
 using MediatR;
 using ProjectManagement.Domain.Repositories;
-using SharedKernel.Identity;
-using SharedKernel.IntegrationEvents;
-using SharedKernel.Primitives;
+using Core.Identity;
+using Core.IntegrationEvents;
+using Core.IntegrationEvents.ProjectManagement;
+using Core.Primitives;
 
 namespace ProjectManagement.Application.Commands.ArchiveProject;
 

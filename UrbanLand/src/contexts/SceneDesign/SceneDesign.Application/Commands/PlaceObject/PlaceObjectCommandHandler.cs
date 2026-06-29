@@ -1,9 +1,9 @@
+using Core.Primitives;
 using MediatR;
 using SceneDesign.Domain.Entities;
 using SceneDesign.Domain.Repositories;
 using SceneDesign.Domain.Services;
 using SceneDesign.Domain.ValueObjects;
-using SharedKernel.Primitives;
 
 namespace SceneDesign.Application.Commands.PlaceObject;
 

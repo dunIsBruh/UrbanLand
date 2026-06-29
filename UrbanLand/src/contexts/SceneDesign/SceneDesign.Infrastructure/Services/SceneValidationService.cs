@@ -1,7 +1,7 @@
+using Core.Primitives;
 using SceneDesign.Domain.Entities;
 using SceneDesign.Domain.Services;
 using SceneDesign.Domain.ValueObjects;
-using SharedKernel.Primitives;
 
 namespace SceneDesign.Infrastructure.Services;
 

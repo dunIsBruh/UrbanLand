@@ -1,5 +1,5 @@
 using AssetCatalog.Domain.ValueObjects;
-using SharedKernel.Abstractions;
+using Core.Abstractions;
 
 namespace AssetCatalog.Domain.Entities;
 

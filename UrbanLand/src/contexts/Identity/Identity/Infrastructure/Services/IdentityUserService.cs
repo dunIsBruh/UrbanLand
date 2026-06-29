@@ -1,10 +1,10 @@
+using Core.Identity;
+using Core.Primitives;
 using Identity.Application.Services;
 using Identity.Infrastructure.Entities;
 using Identity.Presentation.Models.Requests;
 using Identity.Presentation.Models.Responses;
 using Microsoft.AspNetCore.Identity;
-using SharedKernel.Identity;
-using SharedKernel.Primitives;
 
 namespace Identity.Infrastructure.Services;
 

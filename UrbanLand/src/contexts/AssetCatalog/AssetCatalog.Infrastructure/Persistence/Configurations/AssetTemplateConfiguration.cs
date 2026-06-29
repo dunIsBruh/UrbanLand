@@ -2,7 +2,7 @@ using AssetCatalog.Domain.Entities;
 using AssetCatalog.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SharedKernel.Identity;
+using Core.Identity;
 
 namespace AssetCatalog.Infrastructure.Persistence.Configurations;
 

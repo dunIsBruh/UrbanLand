@@ -1,5 +1,5 @@
+using Core.Primitives;
 using Identity.Presentation.Models.Responses;
-using SharedKernel.Primitives;
 
 namespace Identity.Application.Services;
 

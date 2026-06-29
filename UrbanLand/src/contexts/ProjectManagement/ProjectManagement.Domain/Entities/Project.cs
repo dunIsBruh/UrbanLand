@@ -1,10 +1,10 @@
+using Core.Abstractions;
+using Core.Identity;
+using Core.Primitives;
 using ProjectManagement.Domain.Enums;
 using ProjectManagement.Domain.Events;
 using ProjectManagement.Domain.ValueObjects;
-using SharedKernel.Abstractions;
-using SharedKernel.Identity;
-using SharedKernel.Primitives;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Domain.Entities;
 

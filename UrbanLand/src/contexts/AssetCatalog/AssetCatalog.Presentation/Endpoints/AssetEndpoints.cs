@@ -14,8 +14,8 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using SharedKernel.Primitives;
-using static AssetCatalog.Presentation.Endpoints.EndpointHelpers;
+using Core.Primitives;
+using Core.Web;
 
 namespace AssetCatalog.Presentation.Endpoints;
 
@@ -86,7 +86,7 @@ public static class AssetEndpoints
 
         return result.Match<List<AssetSummaryDto>, IResult>(
             onSuccess: list => TypedResults.Ok(list.Select(AssetSummaryResponse.FromDto).ToList()),
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 
@@ -100,7 +100,7 @@ public static class AssetEndpoints
 
         return result.Match<AssetDto, IResult>(
             onSuccess: dto => TypedResults.Ok(AssetDetailResponse.FromDto(dto)),
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 
@@ -121,7 +121,7 @@ public static class AssetEndpoints
             onSuccess: assetId => TypedResults.Created(
                 $"/api/assets/{assetId.Value}",
                 new ImportAssetResponse { AssetId = assetId.Value }),
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 
@@ -139,7 +139,7 @@ public static class AssetEndpoints
             onSuccess: assetId => TypedResults.Created(
                 $"/api/assets/{assetId.Value}",
                 new ImportAssetResponse { AssetId = assetId.Value }),
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 
@@ -153,7 +153,7 @@ public static class AssetEndpoints
 
         return result.Match(
             onSuccess: TypedResults.NoContent,
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 
@@ -171,7 +171,7 @@ public static class AssetEndpoints
                 Color = t.Color,
                 Size = t.Size
             }).ToList()),
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 }

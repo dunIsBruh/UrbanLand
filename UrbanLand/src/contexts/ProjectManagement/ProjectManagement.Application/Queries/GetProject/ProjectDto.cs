@@ -1,7 +1,8 @@
+using Core.Identity;
 using ProjectManagement.Domain.Enums;
 using ProjectManagement.Domain.ValueObjects;
-using SharedKernel.Identity;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using Core.Identity;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Application.Queries.GetProject;
 

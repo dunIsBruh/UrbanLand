@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Infrastructure.Persistence.Configurations;
 using ProjectManagement.Domain.Entities;
-using SharedKernel.Abstractions;
-using SharedKernel.Identity;
+using Core.Abstractions;
+using Core.Identity;
 
 namespace ProjectManagement.Infrastructure.Persistence;
 

@@ -1,8 +1,7 @@
+using Core.Primitives;
 using MediatR;
 using SceneDesign.Domain.Repositories;
-using SceneDesign.Domain.ValueObjects;
-using SharedKernel.Primitives;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace SceneDesign.Application.Queries.GetScene;
 
@@ -16,7 +15,9 @@ public class GetSceneQueryHandler(
         var scene = await sceneRepository.GetByProjectIdAsync(projectId, ct);
 
         if (scene == null)
+        {
             return Result<SceneDto>.Failure(Error.NotFound("Scene", $"project {query.ProjectId}"));
+        }
 
         return Result<SceneDto>.Success(SceneDto.FromDomain(scene));
     }

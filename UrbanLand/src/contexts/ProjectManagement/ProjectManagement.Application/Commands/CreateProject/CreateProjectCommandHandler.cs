@@ -1,13 +1,16 @@
+using Core.Identity;
+using Core.Primitives;
 using MassTransit;
 using MediatR;
 using ProjectManagement.Domain.Entities;
 using ProjectManagement.Domain.Repositories;
 using ProjectManagement.Domain.ValueObjects;
-using SharedKernel.Exceptions;
-using SharedKernel.Identity;
-using SharedKernel.IntegrationEvents;
-using SharedKernel.Primitives;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using Core.Exceptions;
+using Core.Identity;
+using Core.IntegrationEvents;
+using Core.IntegrationEvents.ProjectManagement;
+using Core.Primitives;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Application.Commands.CreateProject;
 

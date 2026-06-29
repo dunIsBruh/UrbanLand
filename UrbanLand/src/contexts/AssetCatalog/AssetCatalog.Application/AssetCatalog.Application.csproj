@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\shared\SharedKernel\SharedKernel.csproj" />
       <ProjectReference Include="..\AssetCatalog.Domain\AssetCatalog.Domain.csproj" />
     </ItemGroup>
 

@@ -1,4 +1,5 @@
 using System.Text;
+using Core.Identity;
 using Identity.Application.Services;
 using Identity.Infrastructure.Entities;
 using Identity.Infrastructure.Options;
@@ -14,7 +15,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using SharedKernel.Identity;
 
 namespace Identity;
 

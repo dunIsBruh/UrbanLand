@@ -1,6 +1,6 @@
+using Core.Abstractions;
 using ProjectManagement.Domain.Enums;
-using SharedKernel.Abstractions;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Domain.Events;
 

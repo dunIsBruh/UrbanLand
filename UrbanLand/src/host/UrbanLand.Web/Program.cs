@@ -1,8 +1,8 @@
 using ProjectManagement.Presentation;
 using SceneDesign.Presentation;
 using AssetCatalog.Presentation;
+using Core.Infrastructure.Caching;
 using Identity;
-using SharedKernel.Infrastructure.Caching;
 using UrbanLand.Web.Extensions;
 using Serilog;
 using UrbanLand.Web;

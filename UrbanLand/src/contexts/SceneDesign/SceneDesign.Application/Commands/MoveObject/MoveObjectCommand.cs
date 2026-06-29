@@ -1,5 +1,5 @@
+using Core.Primitives;
 using MediatR;
-using SharedKernel.Primitives;
 
 namespace SceneDesign.Application.Commands.MoveObject;
 

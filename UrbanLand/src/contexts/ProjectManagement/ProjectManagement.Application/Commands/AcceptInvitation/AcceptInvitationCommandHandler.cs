@@ -1,7 +1,9 @@
+using Core.Identity;
+using Core.Primitives;
 using MediatR;
 using ProjectManagement.Domain.Repositories;
-using SharedKernel.Identity;
-using SharedKernel.Primitives;
+using Core.Identity;
+using Core.Primitives;
 
 namespace ProjectManagement.Application.Commands.AcceptInvitation;
 
@@ -22,11 +24,15 @@ public class AcceptInvitationCommandHandler : IRequestHandler<AcceptInvitationCo
     {
         var project = await _projectRepository.GetByIdAsync(command.ProjectId, ct);
         if (project == null)
+        {
             return Result<string>.Failure(Error.NotFound("Project", command.ProjectId));
+        }
 
         var result = project.AcceptInvitation(command.InviteCode, command.UserId);
         if (result.IsFailure)
+        {
             return Result<string>.Failure(result.Error);
+        }
 
         await _projectRepository.SaveAsync(project, ct);
 

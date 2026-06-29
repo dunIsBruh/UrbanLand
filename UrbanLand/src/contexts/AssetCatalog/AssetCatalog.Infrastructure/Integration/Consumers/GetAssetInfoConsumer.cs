@@ -2,7 +2,7 @@ using AssetCatalog.Domain.Repositories;
 using AssetCatalog.Domain.ValueObjects;
 using MassTransit;
 using Microsoft.Extensions.Logging;
-using SharedKernel.IntegrationEvents.SceneDesign;
+using Core.IntegrationEvents.SceneDesign;
 
 namespace AssetCatalog.Infrastructure.Integration.Consumers;
 

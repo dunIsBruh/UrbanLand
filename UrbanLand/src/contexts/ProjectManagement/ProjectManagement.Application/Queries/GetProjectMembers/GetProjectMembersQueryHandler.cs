@@ -1,6 +1,7 @@
+using Core.Primitives;
 using MediatR;
 using ProjectManagement.Domain.Repositories;
-using SharedKernel.Primitives;
+using Core.Primitives;
 
 namespace ProjectManagement.Application.Queries.GetProjectMembers;
 

@@ -1,7 +1,8 @@
+using Core.Primitives;
 using MediatR;
 using ProjectManagement.Domain.ValueObjects;
-using SharedKernel.Primitives;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using Core.Primitives;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Application.Commands.DeleteProject;
 
