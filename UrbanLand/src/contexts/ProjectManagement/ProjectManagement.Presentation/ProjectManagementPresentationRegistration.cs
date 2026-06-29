@@ -6,12 +6,8 @@ namespace ProjectManagement.Presentation;
 
 public static class ProjectManagementPresentationRegistration
 {
-    public static IServiceCollection AddProjectManagementPresentation(
-        this IServiceCollection services)
+    public static IServiceCollection AddProjectManagementPresentation(this IServiceCollection services)
     {
-        // Здесь могут быть специфичные для Presentation сервисы
-        // Например, Mapster конфигурации
-
         return services;
     }
 

@@ -31,8 +31,7 @@ public static class SceneDesignInfrastructureRegistration
             });
 
             options.UseSnakeCaseNamingConvention();
-            options.EnableSensitiveDataLogging(
-                configuration.GetValue<bool>("Logging:EnableSensitiveDataLogging"));
+            options.EnableSensitiveDataLogging(configuration.GetValue<bool>("Logging:EnableSensitiveDataLogging"));
         });
 
         services.AddScoped<ISceneRepository, SceneRepository>();

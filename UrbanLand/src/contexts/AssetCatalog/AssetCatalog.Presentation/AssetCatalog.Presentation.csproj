@@ -15,6 +15,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\shared\SharedKernel\SharedKernel.csproj" />
       <ProjectReference Include="..\AssetCatalog.Application\AssetCatalog.Application.csproj" />
+      <ProjectReference Include="..\AssetCatalog.Infrastructure\AssetCatalog.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
