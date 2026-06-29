@@ -57,33 +57,3 @@ public abstract class BaseDbContext : DbContext
         }
     }
 }
-
-
-
-// private void UpdateAuditableEntities()
-// {
-//     var entries = ChangeTracker
-//         .Entries()
-//         .Where(e => e.Entity is not null && 
-//                    e.State is EntityState.Added or EntityState.Modified);
-//
-//     foreach (var entry in entries)
-//     {
-//         if (entry.Entity is IAuditableEntity auditable)
-//         {
-//             var now = DateTime.UtcNow;
-//             var userId = _currentUserService?.UserId ?? Guid.Empty;
-//
-//             if (entry.State == EntityState.Added)
-//             {
-//                 auditable.CreatedAt = now;
-//                 auditable.CreatedBy = userId;
-//             }
-//             else
-//             {
-//                 auditable.ModifiedAt = now;
-//                 auditable.ModifiedBy = userId;
-//             }
-//         }
-//     }
-// }

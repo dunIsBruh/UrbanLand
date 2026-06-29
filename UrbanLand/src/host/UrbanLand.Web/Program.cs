@@ -1,14 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using ProjectManagement.Application;
-using ProjectManagement.Infrastructure;
 using ProjectManagement.Infrastructure.Persistence;
 using ProjectManagement.Presentation;
-using SceneDesign.Application;
-using SceneDesign.Infrastructure;
 using SceneDesign.Infrastructure.Persistence;
 using SceneDesign.Presentation;
-using AssetCatalog.Application;
-using AssetCatalog.Infrastructure;
 using AssetCatalog.Infrastructure.Persistence;
 using AssetCatalog.Presentation;
 using Identity;
@@ -26,26 +20,10 @@ builder.Services.AddRedisCaching(builder.Configuration);
 builder.Services.AddCustomCors(builder.Configuration);
 builder.Services.AddCustomMassTransit(builder.Configuration);
 
-// identity subdomain
 builder.Services.AddIdentityModule(builder.Configuration);
-
-// project management
-builder.Services
-    .AddProjectManagementApplication()
-    .AddProjectManagementInfrastructure(builder.Configuration)
-    .AddProjectManagementPresentation();
-
-// scene design  
-builder.Services
-    .AddSceneDesignApplication()
-    .AddSceneDesignInfrastructure(builder.Configuration)
-    .AddSceneDesignPresentation();
-
-// asset catalog
-builder.Services
-    .AddAssetCatalogApplication()
-    .AddAssetCatalogInfrastructure(builder.Configuration)
-    .AddAssetCatalogPresentation();
+builder.Services.AddProjectManagementModule(builder.Configuration);
+builder.Services.AddSceneDesignModule(builder.Configuration);
+builder.Services.AddAssetCatalogModule(builder.Configuration);
 
 var app = builder.Build();
 

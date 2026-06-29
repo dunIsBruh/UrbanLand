@@ -24,8 +24,7 @@ public static class AssetCatalogInfrastructureRegistration
             
             options.UseNpgsql(connectionString, npgsqlOptions =>
             {
-                npgsqlOptions.MigrationsAssembly(
-                    typeof(AssetCatalogDbContext).Assembly.FullName);
+                npgsqlOptions.MigrationsAssembly(typeof(AssetCatalogDbContext).Assembly.FullName);
                 npgsqlOptions.MigrationsHistoryTable(
                     "__EFMigrationsHistory",
                     "asset_catalog");

@@ -17,8 +17,7 @@ public class SceneValidationService : ISceneValidationService
             {
                 if (obj.BoundingBox.Intersects(newBounds))
                 {
-                    return Result.Failure(
-                        Error.Validation("Position collides with existing object"));
+                    return Result.Failure(Error.Validation("Position collides with existing object"));
                 }
             }
         }

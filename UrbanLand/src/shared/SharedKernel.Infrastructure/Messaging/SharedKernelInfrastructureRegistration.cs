@@ -2,7 +2,6 @@ using System.Reflection;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-// using SharedKernel.Infrastructure.Persistence;
 
 namespace SharedKernel.Infrastructure.Messaging;
 

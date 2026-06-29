@@ -40,7 +40,6 @@ public static class ProjectManagementInfrastructureRegistration
         services.AddScoped<IProjectRepository, ProjectRepository>();
         
         services.AddScoped<IProjectAccessService, ProjectAccessService>();
-        
         services.AddScoped<IUserService, UserServiceAdapter>();
 
         return services;

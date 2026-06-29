@@ -13,6 +13,7 @@ public class SceneRepository(SceneDesignDbContext context) : ISceneRepository
         return await context.Scenes
             .Include(s => s.Objects)
             .Include(s => s.Layers)
+            .AsNoTracking()
             .FirstOrDefaultAsync(s => s.Id == id, ct);
     }
 

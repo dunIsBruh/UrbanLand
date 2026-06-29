@@ -18,10 +18,7 @@ public static class MassTransitExtension
 		
 		if (isMassTransitEnabled)
 		{
-			services.AddSharedMassTransit(
-				configuration,
-				assemblies
-			);
+			services.AddSharedMassTransit(configuration, assemblies);
 		}	
 		else
 		{	
