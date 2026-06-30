@@ -1,6 +1,3 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Core.Infrastructure.Caching;
 
 public static class RedisConfigurationExtensions
