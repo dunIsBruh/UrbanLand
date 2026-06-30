@@ -1,4 +1,5 @@
 using AssetCatalog.Presentation.Endpoints;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AssetCatalog.Presentation;
 

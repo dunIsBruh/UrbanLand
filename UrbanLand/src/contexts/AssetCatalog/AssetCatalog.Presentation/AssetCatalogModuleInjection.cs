@@ -1,5 +1,7 @@
 using AssetCatalog.Application;
 using AssetCatalog.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AssetCatalog.Presentation;
 
