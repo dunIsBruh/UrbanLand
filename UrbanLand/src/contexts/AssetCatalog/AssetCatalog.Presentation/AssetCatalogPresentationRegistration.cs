@@ -1,6 +1,4 @@
 using AssetCatalog.Presentation.Endpoints;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AssetCatalog.Presentation;
 

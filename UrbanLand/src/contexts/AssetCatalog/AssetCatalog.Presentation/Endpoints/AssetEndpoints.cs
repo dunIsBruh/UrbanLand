@@ -10,10 +10,6 @@ using TopographicSymbolDto = AssetCatalog.Application.Queries.GetTopographicSymb
 using AssetCatalog.Domain.ValueObjects;
 using AssetCatalog.Presentation.Models.Requests;
 using AssetCatalog.Presentation.Models.Responses;
-using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using Core.Primitives;
 using Core.Web;
 
