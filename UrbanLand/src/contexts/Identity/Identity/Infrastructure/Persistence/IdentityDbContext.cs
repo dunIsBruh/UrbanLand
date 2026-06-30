@@ -1,8 +1,5 @@
 using Identity.Infrastructure.Entities;
 using Identity.Infrastructure.Persistence.Configurations;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Persistence;
 

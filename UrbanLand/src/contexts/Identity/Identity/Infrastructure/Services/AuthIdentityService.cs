@@ -4,7 +4,6 @@ using Identity.Infrastructure.Entities;
 using Identity.Infrastructure.Services.Tokens;
 using Identity.Presentation.Models.Requests;
 using Identity.Presentation.Models.Responses;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
 namespace Identity.Infrastructure.Services;

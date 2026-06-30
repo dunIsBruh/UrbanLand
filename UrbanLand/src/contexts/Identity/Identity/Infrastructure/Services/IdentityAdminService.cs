@@ -2,8 +2,6 @@ using Core.Primitives;
 using Identity.Application.Services;
 using Identity.Infrastructure.Entities;
 using Identity.Presentation.Models.Responses;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Services;
 

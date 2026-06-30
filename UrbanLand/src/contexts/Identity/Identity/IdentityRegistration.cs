@@ -1,20 +1,13 @@
-using System.Text;
 using Core.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Identity.Application.Services;
 using Identity.Infrastructure.Entities;
 using Identity.Infrastructure.Options;
-using Identity.Infrastructure.Persistence;
 using Identity.Infrastructure.Services;
 using Identity.Infrastructure.Services.Tokens;
 using Identity.Presentation.Endpoints;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
+using IdentityDbContext = Identity.Infrastructure.Persistence.IdentityDbContext;
 
 namespace Identity;
 

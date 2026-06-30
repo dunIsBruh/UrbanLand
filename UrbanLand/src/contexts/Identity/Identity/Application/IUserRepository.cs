@@ -1,4 +1,3 @@
-using Identity.Infrastructure;
 using Identity.Infrastructure.Entities;
 
 namespace Identity.Application;

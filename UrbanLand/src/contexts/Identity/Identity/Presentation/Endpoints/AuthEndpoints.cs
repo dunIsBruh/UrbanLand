@@ -1,14 +1,10 @@
-using System.ComponentModel.DataAnnotations;
 using Core.Primitives;
 using Identity.Application.Services;
 using Identity.Infrastructure.Services;
 using Identity.Infrastructure.Services.Tokens;
 using Identity.Presentation.Models.Requests;
 using Identity.Presentation.Models.Responses;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 
 namespace Identity.Presentation.Endpoints;
 

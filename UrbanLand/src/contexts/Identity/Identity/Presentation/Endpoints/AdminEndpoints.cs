@@ -2,10 +2,6 @@ using Core.Primitives;
 using Identity.Application.Services;
 using Identity.Presentation.Models.Requests;
 using Identity.Presentation.Models.Responses;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 
 namespace Identity.Presentation.Endpoints;
 
@@ -47,7 +43,7 @@ public static class AdminEndpoints
 
     private static async Task<IResult> SetUserRoleAsync(
         Guid userId,
-        [FromBody] SetRoleRequest request,
+        SetRoleRequest request,
         IAdminService adminService)
     {
         if (request.Role is not ("User" or "Admin"))
