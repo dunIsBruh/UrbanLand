@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection;
 using SceneDesign.Presentation.Endpoints;
 
 namespace SceneDesign.Presentation;

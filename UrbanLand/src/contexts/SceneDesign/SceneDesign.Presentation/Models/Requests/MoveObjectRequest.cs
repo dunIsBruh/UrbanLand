@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace SceneDesign.Presentation.Models.Requests;
 
 /// <summary>
