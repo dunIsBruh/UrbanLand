@@ -2,9 +2,7 @@ using ProjectManagement.Presentation;
 using SceneDesign.Presentation;
 using AssetCatalog.Presentation;
 using Core.Infrastructure.Caching;
-using Identity;
 using UrbanLand.Web.Extensions;
-using Serilog;
 using UrbanLand.Web;
 
 var builder = WebApplication.CreateBuilder(args);
