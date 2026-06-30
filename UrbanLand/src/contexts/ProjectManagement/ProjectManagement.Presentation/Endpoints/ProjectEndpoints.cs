@@ -1,7 +1,3 @@
-using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using ProjectManagement.Application.Commands.ArchiveProject;
 using ProjectManagement.Application.Commands.CreateProject;
 using ProjectManagement.Application.Commands.UpdateSettings;

@@ -1,7 +1,3 @@
-using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using ProjectManagement.Application.Commands.AddMember;
 using ProjectManagement.Application.Commands.ChangeMemberRole;
 using ProjectManagement.Application.Commands.RemoveMember;
