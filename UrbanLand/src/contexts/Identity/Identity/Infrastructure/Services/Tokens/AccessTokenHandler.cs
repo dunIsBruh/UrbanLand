@@ -22,7 +22,8 @@ public static class AccessTokenHandler
 			audience: jwtsSettings.Audience,
 			claims: claims,
 			expires: DateTime.UtcNow.AddMinutes(jwtsSettings.AccessTokenExpirationMinutes),
-			signingCredentials: credentials);
+			signingCredentials: credentials
+			);
 
 		return token;
 	}

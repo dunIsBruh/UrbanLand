@@ -26,7 +26,6 @@ public class AuthIdentityService(
         };
 
         var result = await userManager.CreateAsync(user, request.Password);
-
         if (!result.Succeeded)
         {
             return Result<AuthResponse>.Failure(new Error("IDENTITY_ERROR", "User creation failed"));

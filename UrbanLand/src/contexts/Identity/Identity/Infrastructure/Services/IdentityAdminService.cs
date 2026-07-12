@@ -9,6 +9,7 @@ public class IdentityAdminService(UserManager<ApplicationUser> userManager) : IA
 {
     public async Task<List<UserResponse>> GetUsersAsync(CancellationToken ct = default)
     {
+        //
         var users = await userManager.Users
             .OrderByDescending(u => u.CreatedAt)
             .Take(100)

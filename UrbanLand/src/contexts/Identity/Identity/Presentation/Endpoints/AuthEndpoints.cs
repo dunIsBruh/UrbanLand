@@ -4,7 +4,6 @@ using Identity.Infrastructure.Services;
 using Identity.Infrastructure.Services.Tokens;
 using Identity.Presentation.Models.Requests;
 using Identity.Presentation.Models.Responses;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Identity.Presentation.Endpoints;
 
@@ -25,7 +24,7 @@ public static class AuthEndpoints
 
         group.MapPost("/login", LoginAsync)
             .WithName("Login")
-            .WithSummary("Login")
+            .WithSummary("Login via token")
             .WithDescription("Authenticate user and get tokens")
             .Produces<AuthResponse>()
             .Produces(StatusCodes.Status401Unauthorized)
@@ -42,15 +41,15 @@ public static class AuthEndpoints
         group.MapPost("/logout", LogoutAsync)
             .WithName("Logout")
             .WithSummary("Logout")
-            .WithDescription("Revoke refresh token")
+            .WithDescription("Revoke refresh token from user, witch invoke this handler")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization();
 
         group.MapPost("/logout-all", LogoutAllAsync)
             .WithName("LogoutAll")
-            .WithSummary("Logout All")
-            .WithDescription("Revoke all refresh tokens")
+            .WithSummary("Logout All refresh tokens")
+            .WithDescription("Revoke all refresh tokens from user, witch invoke this handler")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization();
@@ -73,7 +72,8 @@ public static class AuthEndpoints
             return TypedResults.BadRequest(new Error(
                 "VALIDATION_ERROR", 
                 "Password must be at least 8 characters"
-                ));
+                )
+            );
         }
 
         var result = await authService.RegisterAsync(request);
@@ -111,7 +111,6 @@ public static class AuthEndpoints
         TokenService tokenService)
     {
         var refreshToken = httpContext.Request.GetRefreshTokenCookie();
-
         if (string.IsNullOrWhiteSpace(request.AccessToken) || string.IsNullOrWhiteSpace(refreshToken))
         {
             return TypedResults.BadRequest(new Error(
