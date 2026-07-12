@@ -4,7 +4,6 @@ using Identity.Application.Services;
 using Identity.Infrastructure.Entities;
 using Identity.Presentation.Models.Requests;
 using Identity.Presentation.Models.Responses;
-using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Infrastructure.Services;
 

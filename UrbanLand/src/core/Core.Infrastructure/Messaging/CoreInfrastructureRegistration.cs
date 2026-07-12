@@ -1,8 +1,3 @@
-using System.Reflection;
-using MassTransit;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Core.Infrastructure.Messaging;
 
 public static class CoreInfrastructureRegistration

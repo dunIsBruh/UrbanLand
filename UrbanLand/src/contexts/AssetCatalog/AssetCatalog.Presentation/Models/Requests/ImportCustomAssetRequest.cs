@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace AssetCatalog.Presentation.Models.Requests;
 
 /// <summary>

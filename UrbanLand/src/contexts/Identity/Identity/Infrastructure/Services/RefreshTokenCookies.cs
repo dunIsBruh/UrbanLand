@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http;
-
 namespace Identity.Infrastructure.Services;
 
 public static class RefreshTokenCookies

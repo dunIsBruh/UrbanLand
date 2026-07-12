@@ -2,8 +2,6 @@ using Core.Primitives;
 using Identity.Application.Services;
 using Identity.Infrastructure.Entities;
 using Identity.Presentation.Models.Responses;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Services;
 
@@ -11,6 +9,7 @@ public class IdentityAdminService(UserManager<ApplicationUser> userManager) : IA
 {
     public async Task<List<UserResponse>> GetUsersAsync(CancellationToken ct = default)
     {
+        //
         var users = await userManager.Users
             .OrderByDescending(u => u.CreatedAt)
             .Take(100)

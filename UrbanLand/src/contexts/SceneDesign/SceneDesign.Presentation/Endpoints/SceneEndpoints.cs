@@ -1,9 +1,5 @@
 using Core.Primitives;
 using Core.Web;
-using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using SceneDesign.Application.Commands.CreateScene;
 using SceneDesign.Application.Commands.MoveObject;
 using SceneDesign.Application.Commands.PlaceObject;

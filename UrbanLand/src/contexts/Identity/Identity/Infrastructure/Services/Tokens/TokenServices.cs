@@ -1,15 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using Identity.Infrastructure.Entities;
 using Identity.Infrastructure.Options;
-using Identity.Infrastructure.Persistence;
 using Identity.Presentation.Models.Responses;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+using IdentityDbContext = Identity.Infrastructure.Persistence.IdentityDbContext;
 
 namespace Identity.Infrastructure.Services.Tokens;
 
@@ -31,6 +26,8 @@ public class TokenService(
         var jwtId = claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value;
 
         var refreshToken = RefreshTokenGenerator.Generate(user.Id, jwtId, _jwtSettings);
+        
+        //
         await dbContext.RefreshTokens.AddAsync(refreshToken);
         await dbContext.SaveChangesAsync();
         
@@ -61,6 +58,7 @@ public class TokenService(
             return null;
         }
 
+        //
         var storedRefreshToken = await dbContext.RefreshTokens
             .Include(rt => rt.User)
             .FirstOrDefaultAsync(rt => rt.Token == refreshToken);
@@ -77,8 +75,10 @@ public class TokenService(
             return null;
         }
 
+        //
         storedRefreshToken.IsUsed = true;
         storedRefreshToken.UsedAt = DateTime.UtcNow;
+        
         dbContext.RefreshTokens.Update(storedRefreshToken);
         await dbContext.SaveChangesAsync();
 
@@ -87,13 +87,17 @@ public class TokenService(
 
     public async Task RevokeRefreshTokenAsync(string refreshToken)
     {
+        //
         var storedToken = await dbContext.RefreshTokens
+            .Include(rt => rt.User)
             .FirstOrDefaultAsync(rt => rt.Token == refreshToken);
 
         if (storedToken is { IsValid: true })
         {
+            // 
             storedToken.IsRevoked = true;
             storedToken.RevokedAt = DateTime.UtcNow;
+            
             dbContext.RefreshTokens.Update(storedToken);
             await dbContext.SaveChangesAsync();
         }
@@ -101,6 +105,7 @@ public class TokenService(
 
     public async Task RevokeAllUserRefreshTokensAsync(Guid userId)
     {
+        //
         var tokens = await dbContext.RefreshTokens
             .Where(rt => rt.UserId == userId && rt.IsValid)
             .ToListAsync();
@@ -111,6 +116,7 @@ public class TokenService(
             token.RevokedAt = DateTime.UtcNow;
         }
 
+        //
         dbContext.RefreshTokens.UpdateRange(tokens);
         await dbContext.SaveChangesAsync();
         
@@ -127,8 +133,7 @@ public class TokenService(
             ValidateIssuerSigningKey = true,
             ValidIssuer = _jwtSettings.Issuer,
             ValidAudience = _jwtSettings.Audience,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_jwtSettings.SecretKey))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey))
         };
 
         try
@@ -136,10 +141,11 @@ public class TokenService(
             var tokenHandler = new JwtSecurityTokenHandler();
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
 
-            if (securityToken is not JwtSecurityToken jwtSecurityToken ||
-                !jwtSecurityToken.Header.Alg.Equals(
+            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(
                     SecurityAlgorithms.HmacSha256, 
-                    StringComparison.InvariantCultureIgnoreCase))
+                    StringComparison.InvariantCultureIgnoreCase
+                    )
+                )
             {
                 return null;
             }
