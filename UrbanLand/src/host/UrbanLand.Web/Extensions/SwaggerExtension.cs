@@ -1,6 +1,4 @@
-using System.Reflection;
 using AssetCatalog.Presentation;
-using Microsoft.OpenApi;
 using ProjectManagement.Presentation;
 using SceneDesign.Presentation;
 
@@ -35,7 +33,10 @@ public static class SwaggerExtensions
             foreach (var asm in presentationAssemblies)
             {
                 var path = Path.Combine(AppContext.BaseDirectory, $"{asm.GetName().Name}.xml");
-                if (File.Exists(path)) options.IncludeXmlComments(path);
+                if (File.Exists(path))
+                {
+                    options.IncludeXmlComments(path);
+                }
             }
     
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

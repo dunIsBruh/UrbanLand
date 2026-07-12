@@ -1,13 +1,16 @@
+using Core.Identity;
+using Core.Primitives;
 using MassTransit;
 using MediatR;
 using ProjectManagement.Domain.Entities;
 using ProjectManagement.Domain.Repositories;
 using ProjectManagement.Domain.ValueObjects;
-using SharedKernel.Exceptions;
-using SharedKernel.Identity;
-using SharedKernel.IntegrationEvents;
-using SharedKernel.Primitives;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using Core.Exceptions;
+using Core.Identity;
+using Core.IntegrationEvents;
+using Core.IntegrationEvents.ProjectManagement;
+using Core.Primitives;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Application.Commands.CreateProject;
 
@@ -15,21 +18,21 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
 {
     private readonly IProjectRepository _projectRepository;
     private readonly IPublishEndpoint _publishEndpoint;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public CreateProjectCommandHandler(
         IProjectRepository projectRepository,
         IPublishEndpoint publishEndpoint,
-        ICurrentUserService currentUserService)
+        ICurrentUserAccessor currentUserAccessor)
     {
         _projectRepository = projectRepository;
         _publishEndpoint = publishEndpoint;
-        _currentUserService = currentUserService;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     public async Task<Result<ProjectId>> Handle(CreateProjectCommand command, CancellationToken ct)
     {
-        var ownerId = new UserId(_currentUserService.UserId);
+        var ownerId = new UserId(_currentUserAccessor.UserId);
 
         Result<Project> result;
         try

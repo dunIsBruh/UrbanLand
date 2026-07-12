@@ -1,32 +1,38 @@
+using Core.Identity;
+using Core.Primitives;
 using MediatR;
 using ProjectManagement.Domain.Repositories;
-using SharedKernel.Identity;
-using SharedKernel.Primitives;
+using Core.Identity;
+using Core.Primitives;
 
 namespace ProjectManagement.Application.Commands.AcceptInvitation;
 
 public class AcceptInvitationCommandHandler : IRequestHandler<AcceptInvitationCommand, Result<string>>
 {
     private readonly IProjectRepository _projectRepository;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public AcceptInvitationCommandHandler(
         IProjectRepository projectRepository,
-        ICurrentUserService currentUserService)
+        ICurrentUserAccessor currentUserAccessor)
     {
         _projectRepository = projectRepository;
-        _currentUserService = currentUserService;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     public async Task<Result<string>> Handle(AcceptInvitationCommand command, CancellationToken ct)
     {
         var project = await _projectRepository.GetByIdAsync(command.ProjectId, ct);
         if (project == null)
+        {
             return Result<string>.Failure(Error.NotFound("Project", command.ProjectId));
+        }
 
         var result = project.AcceptInvitation(command.InviteCode, command.UserId);
         if (result.IsFailure)
+        {
             return Result<string>.Failure(result.Error);
+        }
 
         await _projectRepository.SaveAsync(project, ct);
 

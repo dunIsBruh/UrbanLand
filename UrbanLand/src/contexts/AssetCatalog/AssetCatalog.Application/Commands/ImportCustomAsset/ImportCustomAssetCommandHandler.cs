@@ -3,21 +3,21 @@ using AssetCatalog.Domain.Repositories;
 using AssetCatalog.Domain.ValueObjects;
 using MassTransit;
 using MediatR;
-using SharedKernel.Identity;
-using SharedKernel.IntegrationEvents.AssetCatalog;
-using SharedKernel.Primitives;
+using Core.Identity;
+using Core.IntegrationEvents.AssetCatalog;
+using Core.Primitives;
 
 namespace AssetCatalog.Application.Commands.ImportCustomAsset;
 
 public class ImportCustomAssetCommandHandler(
     IAssetRepository assetRepository,
     IPublishEndpoint publishEndpoint,
-    ICurrentUserService currentUserService)
+    ICurrentUserAccessor currentUserAccessor)
     : IRequestHandler<ImportCustomAssetCommand, Result<AssetId>>
 {
     public async Task<Result<AssetId>> Handle(ImportCustomAssetCommand command, CancellationToken ct)
     {
-        var uploaderId = new UserId(currentUserService.UserId);
+        var uploaderId = new UserId(currentUserAccessor.UserId);
 
         var dimensions = new Dimensions(command.Width, command.Height, command.Depth);
         var modelData = new ModelData(

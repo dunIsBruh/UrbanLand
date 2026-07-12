@@ -1,4 +1,5 @@
-using SharedKernel.Identity;
+using Core.Identity;
+using Core.Identity;
 
 namespace ProjectManagement.Application.Queries.GetProjectMembers;
 

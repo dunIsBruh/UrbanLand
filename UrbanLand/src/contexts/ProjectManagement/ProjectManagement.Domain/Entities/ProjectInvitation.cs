@@ -1,6 +1,6 @@
+using Core.Abstractions;
 using ProjectManagement.Domain.ValueObjects;
-using SharedKernel.Abstractions;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Domain.Entities;
 
@@ -20,9 +20,9 @@ public class ProjectInvitation : Entity<ProjectInvitationId>
         ExpiresAt = DateTime.UtcNow.Add(validityPeriod);
     }
 
-    public ProjectId ProjectId { get; private set; } = default!;
+    public ProjectId ProjectId { get; private set; } = null!;
     public string InviteCode { get; private set; } = GenerateCode();
-    public ProjectRole SuggestedRole { get; private set; } = default!;
+    public ProjectRole SuggestedRole { get; private set; } = null!;
     public DateTime ExpiresAt { get; private set; }
     public bool IsUsed { get; private set; }
 

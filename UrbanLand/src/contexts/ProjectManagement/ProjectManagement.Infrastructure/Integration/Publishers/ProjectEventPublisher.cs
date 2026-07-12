@@ -1,6 +1,6 @@
 using MassTransit;
-using SharedKernel.IntegrationEvents;
-using SharedKernel.IntegrationEvents.ProjectManagement;
+using Core.IntegrationEvents;
+using Core.IntegrationEvents.ProjectManagement;
 
 namespace ProjectManagement.Infrastructure.Integration.Publishers;
 

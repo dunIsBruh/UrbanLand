@@ -1,4 +1,4 @@
-using SharedKernel.Abstractions;
+using Core.Abstractions;
 
 namespace SceneDesign.Domain.ValueObjects;
 

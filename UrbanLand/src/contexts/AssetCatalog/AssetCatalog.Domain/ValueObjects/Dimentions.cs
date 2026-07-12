@@ -1,4 +1,4 @@
-using SharedKernel.Abstractions;
+using Core.Abstractions;
 
 namespace AssetCatalog.Domain.ValueObjects;
 
@@ -13,10 +13,6 @@ public record Dimensions : ValueObject
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(width);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(height);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(depth);
-
-        // Guard.AgainstNegativeOrZero((decimal)width);
-        // Guard.AgainstNegativeOrZero((decimal)height);
-        // Guard.AgainstNegativeOrZero((decimal)depth);
 
         Width = width;
         Height = height;

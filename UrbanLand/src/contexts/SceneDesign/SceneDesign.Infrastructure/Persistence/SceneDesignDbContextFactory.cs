@@ -8,13 +8,13 @@ public class SceneDesignDbContextFactory : IDesignTimeDbContextFactory<SceneDesi
     public SceneDesignDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<SceneDesignDbContext>();
-        var connectionString = Environment.GetEnvironmentVariable("SCENEDESIGN_CONNECTION_STRING")
-            ?? "Host=localhost;Port=5432;Database=urbanland_scenedesign;Username=postgres;Password=postgres";
+        
+        var connectionString = args.FirstOrDefault()
+            ?? "Host=localhost;Port=5433;Database=postgres;Username=admin;Password=20admin26";
 
         optionsBuilder.UseNpgsql(connectionString, npgsqlOptions =>
         {
-            npgsqlOptions.MigrationsAssembly(
-                typeof(SceneDesignDbContext).Assembly.FullName);
+            npgsqlOptions.MigrationsAssembly(typeof(SceneDesignDbContext).Assembly.FullName);
             npgsqlOptions.MigrationsHistoryTable(
                 "__EFMigrationsHistory",
                 "scene_design");

@@ -1,8 +1,8 @@
+using Core.Contracts;
 using Microsoft.EntityFrameworkCore;
 using SceneDesign.Domain.Entities;
 using SceneDesign.Domain.Repositories;
 using SceneDesign.Domain.ValueObjects;
-using ProjectId = SharedKernel.Contracts.ProjectId;
 
 namespace SceneDesign.Infrastructure.Persistence.Repositories;
 
@@ -13,6 +13,7 @@ public class SceneRepository(SceneDesignDbContext context) : ISceneRepository
         return await context.Scenes
             .Include(s => s.Objects)
             .Include(s => s.Layers)
+            .AsNoTracking()
             .FirstOrDefaultAsync(s => s.Id == id, ct);
     }
 
@@ -29,7 +30,9 @@ public class SceneRepository(SceneDesignDbContext context) : ISceneRepository
     {
         var entry = context.Entry(scene);
         if (entry.State == EntityState.Detached)
+        {
             context.Scenes.Add(scene);
+        }
 
         await context.SaveChangesAsync(ct);
     }

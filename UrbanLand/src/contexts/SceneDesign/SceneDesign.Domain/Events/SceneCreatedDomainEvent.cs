@@ -1,6 +1,6 @@
+using Core.Abstractions;
+using Core.Contracts;
 using SceneDesign.Domain.ValueObjects;
-using SharedKernel.Abstractions;
-using ProjectId = SharedKernel.Contracts.ProjectId;
 
 namespace SceneDesign.Domain.Events;
 

@@ -1,9 +1,9 @@
+using Core.Abstractions;
+using Core.Contracts;
+using Core.Primitives;
 using SceneDesign.Domain.Enums;
 using SceneDesign.Domain.Events;
 using SceneDesign.Domain.ValueObjects;
-using SharedKernel.Abstractions;
-using SharedKernel.Primitives;
-using ProjectId = SharedKernel.Contracts.ProjectId;
 
 namespace SceneDesign.Domain.Entities;
 

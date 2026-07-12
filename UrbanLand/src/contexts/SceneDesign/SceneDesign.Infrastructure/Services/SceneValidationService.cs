@@ -1,7 +1,7 @@
+using Core.Primitives;
 using SceneDesign.Domain.Entities;
 using SceneDesign.Domain.Services;
 using SceneDesign.Domain.ValueObjects;
-using SharedKernel.Primitives;
 
 namespace SceneDesign.Infrastructure.Services;
 
@@ -17,8 +17,7 @@ public class SceneValidationService : ISceneValidationService
             {
                 if (obj.BoundingBox.Intersects(newBounds))
                 {
-                    return Result.Failure(
-                        Error.Validation("Position collides with existing object"));
+                    return Result.Failure(Error.Validation("Position collides with existing object"));
                 }
             }
         }

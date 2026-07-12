@@ -2,7 +2,7 @@ using AssetCatalog.Domain.Entities;
 using AssetCatalog.Domain.Repositories;
 using AssetCatalog.Domain.ValueObjects;
 using MediatR;
-using SharedKernel.Primitives;
+using Core.Primitives;
 
 namespace AssetCatalog.Application.Commands.ApproveAsset;
 

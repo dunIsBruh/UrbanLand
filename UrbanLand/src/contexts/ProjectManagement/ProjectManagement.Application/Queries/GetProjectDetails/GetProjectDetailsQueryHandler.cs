@@ -1,14 +1,16 @@
+using Core.Identity;
+using Core.Primitives;
 using MediatR;
 using ProjectManagement.Domain.Repositories;
 using ProjectManagement.Domain.Services;
-using SharedKernel.Identity;
-using SharedKernel.Primitives;
+using Core.Identity;
+using Core.Primitives;
 
 namespace ProjectManagement.Application.Queries.GetProjectDetails;
 
 public class GetProjectDetailsQueryHandler(
     IProjectRepository projectRepository,
-    ICurrentUserService currentUserService,
+    ICurrentUserAccessor currentUserAccessor,
     IUserService userService)
     : IRequestHandler<GetProjectDetailsQuery, Result<ProjectDetailsDto>>
 {
@@ -20,7 +22,7 @@ public class GetProjectDetailsQueryHandler(
             return Result<ProjectDetailsDto>.Failure(Error.NotFound("Project", query.ProjectId));
         }
 
-        var userId = new UserId(currentUserService.UserId);
+        var userId = new UserId(currentUserAccessor.UserId);
         var currentUserRole = project.Members
             .FirstOrDefault(m => m.MemberId == userId)?.Role.Name ?? "Visitor";
 

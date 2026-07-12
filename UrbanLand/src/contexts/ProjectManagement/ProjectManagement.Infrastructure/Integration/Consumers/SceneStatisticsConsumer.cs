@@ -2,8 +2,8 @@ using MassTransit;
 using Microsoft.Extensions.Logging;
 using ProjectManagement.Domain.Repositories;
 using ProjectManagement.Domain.ValueObjects;
-using SharedKernel.IntegrationEvents.SceneDesign;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using Core.IntegrationEvents.SceneDesign;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Infrastructure.Integration.Consumers;
 

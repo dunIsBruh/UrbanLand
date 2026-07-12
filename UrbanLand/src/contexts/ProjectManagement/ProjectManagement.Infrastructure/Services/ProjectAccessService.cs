@@ -1,8 +1,8 @@
 using ProjectManagement.Domain.Repositories;
 using ProjectManagement.Domain.Services;
 using ProjectManagement.Domain.ValueObjects;
-using SharedKernel.Identity;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using Core.Identity;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Infrastructure.Services;
 

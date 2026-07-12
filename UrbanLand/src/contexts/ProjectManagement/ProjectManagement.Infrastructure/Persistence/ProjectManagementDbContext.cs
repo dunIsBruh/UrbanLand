@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Infrastructure.Persistence.Configurations;
 using ProjectManagement.Domain.Entities;
-using SharedKernel.Abstractions;
-using SharedKernel.Identity;
+using Core.Abstractions;
+using Core.Identity;
 
 namespace ProjectManagement.Infrastructure.Persistence;
 
 public class ProjectManagementDbContext(
     DbContextOptions<ProjectManagementDbContext> options,
-    ICurrentUserService? currentUserService = null)
+    ICurrentUserAccessor? currentUserService = null)
     : DbContext(options)
 {
     public DbSet<Project> Projects => Set<Project>();

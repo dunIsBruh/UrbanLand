@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SceneDesign.Domain.Repositories;
 using SceneDesign.Domain.Services;
+using SceneDesign.Infrastructure.Integration.Consumers;
 using SceneDesign.Infrastructure.Persistence;
 using SceneDesign.Infrastructure.Persistence.Repositories;
 using SceneDesign.Infrastructure.Services;
@@ -18,20 +19,19 @@ public static class SceneDesignInfrastructureRegistration
     {
         services.AddDbContext<SceneDesignDbContext>((_, options) =>
         {
-            var connectionString = configuration.GetConnectionString("SceneDesign");
+            // var connectionString = configuration.GetConnectionString("SceneDesign");
+            var connectionString = configuration["DatabaseConnection"];
 
             options.UseNpgsql(connectionString, npgsqlOptions =>
             {
-                npgsqlOptions.MigrationsAssembly(
-                    typeof(SceneDesignDbContext).Assembly.FullName);
+                npgsqlOptions.MigrationsAssembly(typeof(SceneDesignDbContext).Assembly.FullName);
                 npgsqlOptions.MigrationsHistoryTable(
                     "__EFMigrationsHistory",
                     "scene_design");
             });
 
             options.UseSnakeCaseNamingConvention();
-            options.EnableSensitiveDataLogging(
-                configuration.GetValue<bool>("Logging:EnableSensitiveDataLogging"));
+            options.EnableSensitiveDataLogging(configuration.GetValue<bool>("Logging:EnableSensitiveDataLogging"));
         });
 
         services.AddScoped<ISceneRepository, SceneRepository>();
@@ -43,7 +43,6 @@ public static class SceneDesignInfrastructureRegistration
 
     public static void AddSceneDesignConsumers(this IBusRegistrationConfigurator configurator)
     {
-        configurator.AddConsumers(
-            typeof(Integration.Consumers.DomainEvents.SceneCreatedDomainEventConsumer).Assembly);
+        configurator.AddConsumers(typeof(SceneCreatedDomainEventConsumer).Assembly);
     }
 }

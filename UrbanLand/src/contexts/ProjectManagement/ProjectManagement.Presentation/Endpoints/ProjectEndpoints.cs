@@ -1,19 +1,15 @@
-using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using ProjectManagement.Application.Commands.ArchiveProject;
 using ProjectManagement.Application.Commands.CreateProject;
 using ProjectManagement.Application.Commands.UpdateSettings;
 using ProjectManagement.Application.Queries.GetProjectDetails;
 using ProjectManagement.Application.Queries.GetUserProjects;
-using ProjectManagement.Domain.ValueObjects;
 using ProjectManagement.Presentation.Models.Project;
 using ProjectManagement.Presentation.Models.ProjectMember;
 using ProjectManagement.Presentation.Models.ProjectSettings;
-using SharedKernel.Primitives;
-using static ProjectManagement.Presentation.Endpoints.EndpointHelpers;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using Core.Identity;
+using Core.Primitives;
+using Core.Web;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Presentation.Endpoints;
 
@@ -71,10 +67,10 @@ public static class ProjectEndpoints
     private static async Task<IResult> CreateProjectAsync(
         CreateProjectRequest request,
         IMediator mediator,
-        HttpContext httpContext,
+        ICurrentUserAccessor userAccessor,
         CancellationToken ct)
     {
-        var userId = GetUserId(httpContext);
+        var userId = userAccessor.UserId;
         if (userId == Guid.Empty)
         {
             return TypedResults.Unauthorized();
@@ -111,7 +107,7 @@ public static class ProjectEndpoints
 
         return result.Match(
             onSuccess: TypedResults.NoContent,
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 
@@ -133,7 +129,7 @@ public static class ProjectEndpoints
 
         return result.Match(
             onSuccess: TypedResults.NoContent,
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 

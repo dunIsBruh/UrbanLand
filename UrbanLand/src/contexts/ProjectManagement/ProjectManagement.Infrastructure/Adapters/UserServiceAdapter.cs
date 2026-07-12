@@ -1,11 +1,11 @@
 using ProjectManagement.Domain.Services;
-using SharedKernel.Identity;
+using Core.Identity;
 
 namespace ProjectManagement.Infrastructure.Adapters;
 
-public class UserServiceAdapter(ICurrentUserService currentUserService) : IUserService
+public class UserServiceAdapter(ICurrentUserAccessor currentUserAccessor) : IUserService
 {
-    private readonly ICurrentUserService _currentUserService = currentUserService;
+    private readonly ICurrentUserAccessor _currentUserAccessor = currentUserAccessor;
     
     // В реальном проекте здесь был бы HttpClient или gRPC клиент
     // для связи с Identity сервисом

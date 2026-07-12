@@ -1,8 +1,10 @@
+using Core.Identity;
+using Core.Primitives;
 using MediatR;
 using ProjectManagement.Domain.ValueObjects;
-using SharedKernel.Identity;
-using SharedKernel.Primitives;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using Core.Identity;
+using Core.Primitives;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Application.Commands.RemoveMember;
 

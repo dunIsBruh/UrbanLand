@@ -1,6 +1,6 @@
+using Core.Primitives;
 using MediatR;
 using SceneDesign.Domain.ValueObjects;
-using SharedKernel.Primitives;
 
 namespace SceneDesign.Application.Commands.CreateScene;
 

@@ -10,12 +10,11 @@ public class ProjectManagementDbContextFactory : IDesignTimeDbContextFactory<Pro
         var optionsBuilder = new DbContextOptionsBuilder<ProjectManagementDbContext>();
 
         var connectionString = args.FirstOrDefault()
-            ?? "Host=localhost;Port=5433;Database=urban_land_project_management;Username=admin;Password=20admin26";
+            ?? "Host=localhost;Port=5433;Database=postgres;Username=admin;Password=20admin26";
 
         optionsBuilder.UseNpgsql(connectionString, npgsqlOptions =>
         {
-            npgsqlOptions.MigrationsAssembly(
-                typeof(ProjectManagementDbContext).Assembly.FullName);
+            npgsqlOptions.MigrationsAssembly(typeof(ProjectManagementDbContext).Assembly.FullName);
             npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "project_management");
         });
         optionsBuilder.UseSnakeCaseNamingConvention();

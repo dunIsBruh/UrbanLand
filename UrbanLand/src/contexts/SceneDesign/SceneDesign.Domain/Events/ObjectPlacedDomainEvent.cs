@@ -1,5 +1,5 @@
+using Core.Abstractions;
 using SceneDesign.Domain.ValueObjects;
-using SharedKernel.Abstractions;
 
 namespace SceneDesign.Domain.Events;
 

@@ -1,9 +1,12 @@
+using Core.Identity;
+using Core.Primitives;
 using MassTransit;
 using MediatR;
 using ProjectManagement.Domain.Repositories;
-using SharedKernel.Identity;
-using SharedKernel.IntegrationEvents;
-using SharedKernel.Primitives;
+using Core.Identity;
+using Core.IntegrationEvents;
+using Core.IntegrationEvents.ProjectManagement;
+using Core.Primitives;
 
 namespace ProjectManagement.Application.Commands.ArchiveProject;
 
@@ -11,16 +14,16 @@ public class ArchiveProjectCommandHandler : IRequestHandler<ArchiveProjectComman
 {
     private readonly IProjectRepository _projectRepository;
     private readonly IPublishEndpoint _publishEndpoint;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public ArchiveProjectCommandHandler(
         IProjectRepository projectRepository,
         IPublishEndpoint publishEndpoint,
-        ICurrentUserService currentUserService)
+        ICurrentUserAccessor currentUserAccessor)
     {
         _projectRepository = projectRepository;
         _publishEndpoint = publishEndpoint;
-        _currentUserService = currentUserService;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     public async Task<Result> Handle(ArchiveProjectCommand command, CancellationToken ct)
@@ -31,7 +34,7 @@ public class ArchiveProjectCommandHandler : IRequestHandler<ArchiveProjectComman
             return Result.Failure(Error.NotFound("Project", command.ProjectId));
         }
 
-        var userId = new UserId(_currentUserService.UserId);
+        var userId = new UserId(_currentUserAccessor.UserId);
         var result = project.Archive(userId);
         if (result.IsFailure)
         {

@@ -1,8 +1,8 @@
 using AssetCatalog.Domain.Entities;
 using AssetCatalog.Domain.Enums;
 using AssetCatalog.Domain.ValueObjects;
-using SharedKernel.Abstractions;
-using SharedKernel.Identity;
+using Core.Abstractions;
+using Core.Identity;
 
 namespace AssetCatalog.Domain.Repositories;
 

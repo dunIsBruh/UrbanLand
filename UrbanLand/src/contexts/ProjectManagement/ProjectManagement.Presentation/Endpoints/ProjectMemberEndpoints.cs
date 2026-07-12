@@ -1,16 +1,12 @@
-using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using ProjectManagement.Application.Commands.AddMember;
 using ProjectManagement.Application.Commands.ChangeMemberRole;
 using ProjectManagement.Application.Commands.RemoveMember;
 using ProjectManagement.Domain.ValueObjects;
 using ProjectManagement.Presentation.Models.ProjectMember;
-using SharedKernel.Identity;
-using SharedKernel.Primitives;
-using static ProjectManagement.Presentation.Endpoints.EndpointHelpers;
-using ProjectId = SharedKernel.Contracts.ProjectId;
+using Core.Identity;
+using Core.Primitives;
+using Core.Web;
+using ProjectId = Core.Contracts.ProjectId;
 
 namespace ProjectManagement.Presentation.Endpoints;
 
@@ -67,7 +63,7 @@ public static class ProjectMemberEndpoints
 
         return result.Match(
             onSuccess: TypedResults.NoContent,
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 
@@ -87,7 +83,7 @@ public static class ProjectMemberEndpoints
 
         return result.Match(
             onSuccess: TypedResults.NoContent,
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 
@@ -105,7 +101,7 @@ public static class ProjectMemberEndpoints
 
         return result.Match(
             onSuccess: TypedResults.NoContent,
-            onFailure: MapErrorToResponse
+            onFailure: EndpointMapper.MapErrorToResponse
         );
     }
 }

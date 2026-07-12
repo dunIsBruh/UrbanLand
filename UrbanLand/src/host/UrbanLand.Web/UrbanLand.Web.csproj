@@ -11,6 +11,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\contexts\AssetCatalog\AssetCatalog.Domain\AssetCatalog.Domain.csproj" />
+      <ProjectReference Include="..\..\contexts\Identity\Identity\Identity.csproj" />
       <ProjectReference Include="..\..\contexts\ProjectManagement\ProjectManagement.Application\ProjectManagement.Application.csproj" />
       <ProjectReference Include="..\..\contexts\ProjectManagement\ProjectManagement.Domain\ProjectManagement.Domain.csproj" />
       <ProjectReference Include="..\..\contexts\ProjectManagement\ProjectManagement.Infrastructure\ProjectManagement.Infrastructure.csproj" />
@@ -22,8 +23,7 @@
       <ProjectReference Include="..\..\contexts\AssetCatalog\AssetCatalog.Application\AssetCatalog.Application.csproj" />
       <ProjectReference Include="..\..\contexts\AssetCatalog\AssetCatalog.Infrastructure\AssetCatalog.Infrastructure.csproj" />
       <ProjectReference Include="..\..\contexts\AssetCatalog\AssetCatalog.Presentation\AssetCatalog.Presentation.csproj" />
-      <ProjectReference Include="..\..\shared\SharedKernel.Infrastructure\SharedKernel.Infrastructure.csproj" />
-      <ProjectReference Include="..\..\shared\SharedKernel\SharedKernel.csproj" />
+      <ProjectReference Include="..\..\core\Core.Infrastructure\Core.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

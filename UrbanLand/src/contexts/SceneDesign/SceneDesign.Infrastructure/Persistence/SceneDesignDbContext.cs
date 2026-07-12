@@ -1,16 +1,16 @@
+using Core.Abstractions;
+using Core.Identity;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using SceneDesign.Domain.Entities;
 using SceneDesign.Infrastructure.Persistence.Configurations;
-using SharedKernel.Abstractions;
-using SharedKernel.Identity;
 
 namespace SceneDesign.Infrastructure.Persistence;
 
 public class SceneDesignDbContext(
     DbContextOptions<SceneDesignDbContext> options,
     IPublishEndpoint publishEndpoint,
-    ICurrentUserService? currentUserService = null)
+    ICurrentUserAccessor? currentUserService = null)
     : DbContext(options)
 {
     public DbSet<Scene> Scenes => Set<Scene>();

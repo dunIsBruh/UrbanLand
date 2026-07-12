@@ -1,4 +1,4 @@
-using SharedKernel.Identity;
+using Core.Identity;
 
 namespace AssetCatalog.Domain.Services;
 

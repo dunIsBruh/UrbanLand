@@ -1,9 +1,9 @@
+using Core.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SceneDesign.Domain.Entities;
 using SceneDesign.Domain.ValueObjects;
-using ProjectId = SharedKernel.Contracts.ProjectId;
 
 namespace SceneDesign.Infrastructure.Persistence.Configurations;
 

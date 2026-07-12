@@ -17,22 +17,21 @@ public static class AssetCatalogInfrastructureRegistration
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<AssetCatalogDbContext>((sp, options) =>
+        services.AddDbContext<AssetCatalogDbContext>((_, options) =>
         {
-            var connectionString = configuration.GetConnectionString("AssetCatalog");
-
+            // var connectionString = configuration.GetConnectionString("AssetCatalog");
+            var connectionString = configuration["DatabaseConnection"];
+            
             options.UseNpgsql(connectionString, npgsqlOptions =>
             {
-                npgsqlOptions.MigrationsAssembly(
-                    typeof(AssetCatalogDbContext).Assembly.FullName);
+                npgsqlOptions.MigrationsAssembly(typeof(AssetCatalogDbContext).Assembly.FullName);
                 npgsqlOptions.MigrationsHistoryTable(
                     "__EFMigrationsHistory",
                     "asset_catalog");
             });
 
             options.UseSnakeCaseNamingConvention();
-            options.EnableSensitiveDataLogging(
-                configuration.GetValue<bool>("Logging:EnableSensitiveDataLogging"));
+            options.EnableSensitiveDataLogging(configuration.GetValue<bool>("Logging:EnableSensitiveDataLogging"));
         });
 
         services.AddScoped<IAssetRepository, AssetRepository>();
